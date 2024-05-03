@@ -107,13 +107,16 @@ const SubCategoryAddEditModal = (props: Props) => {
             image && typeof (image) === 'object' && data.append("image", image); //bypass this line for UoM and size
             data.set("name", name);
             console.log("data before sending in the payload: ", data)
+            setLoading(true)
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
                     console.log(res.data);
                     props.setIscategoryCreated(true)
+                    setLoading(false)
                 }).catch(err => {
                     console.log(err);
                     props.setIscategoryCreated(false)
+                    setLoading(true)
                 })
         }
     }

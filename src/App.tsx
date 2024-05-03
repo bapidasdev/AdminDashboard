@@ -4,23 +4,25 @@ import Menu from "./components/menu/Menu";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home"
 import Login from "./pages/login/Login";
-import Product from "./pages/product/Product";
-import Products from "./pages/brand/Brand"
+
+
 import User from "./pages/user/User";
 import Users from "./pages/Categories/Categories"
 
-import"./styles/global.scss"
+import "./styles/global.scss"
 import {
   createBrowserRouter,
   Outlet,
   RouterProvider,
- 
+
 } from "react-router-dom";
 import Colour from "./pages/colour/Colour";
 import Brand from "./pages/brand/Brand";
 import Size from "./pages/size/Size";
 import Uom from "./pages/uom/Uom";
 import SubCategory from "./pages/subCategory/SubCategory";
+import Product from "./pages/product/Product";
+import Products from "./pages/products/Products";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +58,12 @@ function App() {
           path: "/",
           element: <Home />,
         },
+
+        {
+          path: "/products",
+          element: <Products/>,
+        },
+        
         {
           path: "/categories",
           element: <Users />,
@@ -87,7 +95,7 @@ function App() {
         {
           path: "/products/:id",
           // element: <Product />,
-          element: <Product/>
+          element: <Product />
         },
       ]
     },

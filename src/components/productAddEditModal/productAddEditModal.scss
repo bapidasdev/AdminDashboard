@@ -1,0 +1,250 @@
+@import "../../styles/variables.scss";
+
+.add {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.724);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+
+
+    .modal {
+        padding: 50px;
+        border-radius: 10px;
+        background-color: $main-bg;
+        position: relative;
+        
+        
+
+        h1 {
+            margin-bottom: 40px;
+            font-size: 24px;
+            color: $soft-color;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 500px;
+            justify-content: space-between;
+
+            .item {
+                width: 49%;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 20px;
+
+
+
+                label {
+                    font-size: 14px;
+
+                }
+
+
+
+                .productInputField {
+                    padding: 10px;
+                    background-color: transparent;
+                    color: white;
+                    outline: none;
+                    border: 1px solid $soft-color;
+                    border-radius: 3px;
+                    width: 100%;
+                    height: 45px;
+                    border-radius: 10px;
+
+                }
+
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+
+            .productDropDown {
+                width: 230px;
+                height: 45px;
+                border: 1px solid $soft-color;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                margin-top: 5px;
+                color: white;
+            }
+        }
+    }
+}
+
+.productMrpField {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+    
+
+    label {
+        font-size: 14px;
+    }
+
+    .productMrpFieldInput {
+        padding: 10px;
+        background-color: transparent;
+        color: white;
+        outline: none;
+        border: 1px solid $soft-color;
+        border-radius: 3px;
+        width: 100%;
+        height: 45px;
+        border-radius: 10px;
+    }
+}
+
+.productRewardField {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+    
+
+    label {
+        font-size: 14px;
+    }
+
+    .productRewardFieldInput {
+        padding: 10px;
+        background-color: transparent;
+        color: white;
+        outline: none;
+        border: 1px solid $soft-color;
+        border-radius: 3px;
+        width: 100%;
+        height: 45px;
+        border-radius: 10px;
+    }
+}
+
+.productImageUpload{
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.multiple_img{
+    gap: 10px;
+}
+
+.items {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+
+
+
+    input{
+        padding: 10px;
+        background-color: transparent;
+        color: white;
+        outline: none;
+        border: 1px solid $soft-color;
+        border-radius: 3px;
+        width: 100%;
+        height: 45px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    img{
+        border-radius: 20px;
+    }
+}
+
+
+
+.productAddVariant{
+    padding: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+
+
+.productAddVariantBtn{
+    background-color: white;
+    color: black;
+    padding: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+}
+
+.addInput{
+    margin-top: 30px;
+    padding: 10px;
+    align-items: center;
+    border-radius: 20px;
+    border: 1px solid $soft-color;
+}
+
+.input_div{
+    flex: 2;
+}
+
+.addInputBox{
+    margin-top: 10px;
+    
+}
+
+.addInputBox input{
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+    outline: none;
+    border: 1px solid $soft-color;
+    border-radius: 3px;
+    width: 90%;
+    height: 45px;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-top: 10px;
+    
+}
+
+
+
+.button_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.delete_icon{
+    color: black;
+    padding: 10px;
+    font-weight: 900;
+    font-size: 30px;
+    border: none;
+    border-radius: 10px;
+     height: 340px;
+}

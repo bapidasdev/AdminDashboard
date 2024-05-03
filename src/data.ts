@@ -25,7 +25,7 @@ export const menu = [
       {
         id: 1,
         title: "Product Manager",
-        url: "/product",
+        url: "/products",
         icon: "user.svg",
       },
       

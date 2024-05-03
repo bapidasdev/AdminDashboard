@@ -77,6 +77,7 @@ const DataTable = (props: Props) => {
   return (
     <div className="dataTable">
       <DataGrid
+      
         className="dataGrid"
         rows={categoryyy}
         columns={[...columns,actionColumn]}
