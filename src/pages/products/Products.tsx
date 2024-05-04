@@ -15,7 +15,7 @@ const Products = () => {
         <button className="addButton" onClick={() => setOpen(true)}>ADD Product</button>
       </div>
        {/* <DataTable  setEditData={setEditData}  iscategoryCreated={iscategoryCreated} setOpen={setOpen}  slug="products"/> */}
-       <ProductDataTable />
+       <ProductDataTable setOpen={setOpen}  slug="products" setEditData={setEditData}  iscategoryCreated={iscategoryCreated}/>
       
       {open && <ProductAddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="products" title="product" />}
     </div>

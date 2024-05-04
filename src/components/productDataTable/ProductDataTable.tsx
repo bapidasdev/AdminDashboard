@@ -16,19 +16,20 @@ const ProductDataTable = (props: Props) => {
 
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState('');
-  useEffect(() => {
-    fetch(`http://localhost:8000/api/v1/${props.slug}/`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setCategoryyy(data);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      ;
-  }, [props.iscategoryCreated]);
+
+//   useEffect(() => {
+//     fetch(`http://localhost:8000/api/v1/${props.slug}/`)
+//       .then((res) => {
+//         return res.json();
+//       })
+//       .then((data) => {
+//         setCategoryyy(data);
+//       })
+//       .catch((err) => {
+//         console.log(err)
+//       })
+//       ;
+//   }, [props.iscategoryCreated]);
 
     const handleDelete =(id:number)=>{
       console.log(id + "has been delete")
@@ -38,21 +39,21 @@ const ProductDataTable = (props: Props) => {
     { field: 'id', headerName: 'ID', width: 250 },
     { field: 'name', headerName: ' Name', width: 250 },
 
-//     {
-//       field: 'image',
-//       headerName: 'Image',
-//       width: 200,
-//       renderCell: (params) => {
-//         return <img src={params.row.image} alt='img' />
-//       },
-//       sortable: false,
-//       filterable: false
-//     },
-//     {
-//       field: 'subCategories',
-//       headerName: 'SubCategories',
-//       width: 200,
-//     },
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 200,
+      renderCell: (params) => {
+        return <img src={params.row.image} alt='img' />
+      },
+      sortable: false,
+      filterable: false
+    },
+    // {
+    //   field: 'subCategories',
+    //   headerName: 'SubCategories',
+    //   width: 200,
+    // },
    ];
 
    const getProductsData = async () => {

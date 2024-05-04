@@ -62,6 +62,9 @@ const ProductAddEditModal = (props: Props) => {
     const [uoms, setUoms] = useState([]);
     const [selectedUoms, setSelectedUoms] = useState('');
 
+    const [productPrice, setProductPrice] = useState("");
+    const [productRewardPoint, setProductRewardPoint] = useState("");
+
     // const [products, setProducts] = useState([]);
     // const [selectedProducts, setSelectedProducts] = useState('');
 
@@ -100,7 +103,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-           // console.log("Data: ", data);
+            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((brand: any) => {
                 return {
                     label: brand.name,
@@ -125,7 +128,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-           // console.log("Data: ", data);
+            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((colour: any) => {
                 return {
                     label: colour.name,
@@ -152,7 +155,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-           // console.log("Data: ", data);
+            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((size: any) => {
                 return {
                     label: size.name,
@@ -222,7 +225,7 @@ const ProductAddEditModal = (props: Props) => {
     //     getProductsData();
     // }, [])
 
-  // ___________________________________________products________________________________________________________________________
+    // ___________________________________________products________________________________________________________________________
 
 
 
@@ -250,12 +253,23 @@ const ProductAddEditModal = (props: Props) => {
             let data = new FormData();
             image && data.append("image", image); //bypass this line for UoM and size
             data.set("name", name);
+            //data append korbo
+            selectedBrands !== '' && data.set("brand", selectedBrands);
+            selectedColours !== '' && data.set("colour", selectedColours);
+            selectedSizes !== '' && data.set("size", selectedSizes);
+            selectedUoms !== '' && data.set("uom", selectedUoms);
+            productPrice !== '' && data.set("price", productPrice);
+            productRewardPoint !== '' && data.set("rewardPoint", productRewardPoint);
+
+            data.set("productVariants", JSON.stringify(productVariants));
+            data.set("category", selectedCategory);
+
             console.log("data before sending in the payload: ", data)
             setLoading(true)
             axios.post(`http://localhost:8000/api/v1/${props.slug}/`, data).then(
 
                 res => {
-                    console.log ("bapi",res.data);
+                    console.log("bapi", res.data);
                     props.setIscategoryCreated(true)
                     setLoading(false);
                 }).catch(err => {
@@ -296,27 +310,27 @@ const ProductAddEditModal = (props: Props) => {
 
 
 
-    const handleSelectCategory = (e:any) => {
+    const handleSelectCategory = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedCategory(e.target.value)
     }
 
-    const handleSelectBrand = (e:any) => {
+    const handleSelectBrand = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedBrands(e.target.value)
     }
 
-    const handleSelectColour = (e:any) => {
+    const handleSelectColour = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedColours(e.target.value)
     }
 
-    const handleSelectSize = (e:any) => {
+    const handleSelectSize = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedSizes(e.target.value)
     }
 
-    const handleSelectUoms = (e:any) => {
+    const handleSelectUoms = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedUoms(e.target.value)
     }
@@ -324,24 +338,24 @@ const ProductAddEditModal = (props: Props) => {
 
     // Addvariant
 
-    const handleAddVariant = (e:any) => {
+    const handleAddVariant = (e: any) => {
         e.preventDefault();
         setProductVariants([...productVariants, { colour: '', size: '', uom: '', price: '', packingUnit: '', rewardPoint: '' }])
-      }
-    
-      const handleVariantChange = (value:any, key:any, index:any) => {
+    }
+
+    const handleVariantChange = (value: any, key: any, index: any) => {
         let tempProductVariants = [...productVariants];
-        tempProductVariants[index][key] = value;
+        tempProductVariants[index][key] = value.id;
         setProductVariants(tempProductVariants);
-      }
-    
-      const handleDeleteVariant = (index:any) => {
+    }
+
+    const handleDeleteVariant = (index: any) => {
         let tempProductVariants = [...productVariants];
         tempProductVariants = tempProductVariants.filter((variant, i) => {
-          return i != index;
+            return i != index;
         });
         setProductVariants(tempProductVariants);
-      }
+    }
     //// Addvariant
 
     return (
@@ -467,12 +481,24 @@ const ProductAddEditModal = (props: Props) => {
 
                         <div className='productMrpField'>
                             <label>MRP</label>
-                            <input className='productMrpFieldInput' type="text" placeholder='MRP' />
+                            <input
+                                className='productMrpFieldInput'
+                                type="text"
+                                placeholder='MRP'
+                                onChange={e => setProductPrice(e.target.value)}
+                                value={productPrice}
+                            />
                         </div>
 
                         <div className='productRewardField'>
                             <label>Reward Point</label>
-                            <input className='productRewardFieldInput' type="number" placeholder='Reward Point'/>
+                            <input
+                             className='productRewardFieldInput'
+                              type="number"
+                               placeholder='Reward Point' 
+                               onChange={e => setProductRewardPoint(e.target.value)}
+                               value={productRewardPoint}
+                               />
                         </div>
 
 
@@ -503,7 +529,7 @@ const ProductAddEditModal = (props: Props) => {
                         </div>
 
                         {/* ____________________________ ____________________________ ____________________________ */}
-                        
+
 
                         <div className='items productImageUpload' >
                             <label >Product Gallery Images : </label>
@@ -534,7 +560,7 @@ const ProductAddEditModal = (props: Props) => {
                         {/* Add variant */}
 
                         <div className='productAddVariant'>
-                            <span style={{marginRight:"10px"}}>Add Product Variant :</span>
+                            <span style={{ marginRight: "10px" }}>Add Product Variant :</span>
                             <span
                                 onClick={(e) => handleAddVariant(e)}
                                 className='productAddVariantBtn'
@@ -593,9 +619,9 @@ const ProductAddEditModal = (props: Props) => {
                             })}
 
                         </div>
-                       
 
-                          {/* Add variant */}
+
+                        {/* Add variant */}
                         <button>Save</button>
 
                     </form>
