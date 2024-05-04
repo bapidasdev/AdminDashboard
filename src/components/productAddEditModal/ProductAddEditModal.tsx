@@ -28,7 +28,8 @@ const ProductAddEditModal = (props: Props) => {
     const [productGalleryImages, setProductGalleryImages] = useState(null);
     const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(null);
     const productGalleryImageRef = useRef(null);
-    const handleProductGalleryImage = (e) => {
+
+    const handleProductGalleryImage = (e: any) => {
         setProductGalleryImages(e.target.files);
         let tempURLs = [];
         for (let i = 0; i < e.target.files.length; i++) {
@@ -61,6 +62,9 @@ const ProductAddEditModal = (props: Props) => {
     const [uoms, setUoms] = useState([]);
     const [selectedUoms, setSelectedUoms] = useState('');
 
+    // const [products, setProducts] = useState([]);
+    // const [selectedProducts, setSelectedProducts] = useState('');
+
     const [productVariants, setProductVariants] = useState([]);
 
     // ________________________________________________________________________________________________________________________
@@ -71,7 +75,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-            console.log("Data: ", data);
+            //console.log("Data: ", data);
             const tempCategories = data[0]?.map((category: any) => {
                 return {
                     label: category.name,
@@ -96,7 +100,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-            console.log("Data: ", data);
+           // console.log("Data: ", data);
             const tempCategories = data[0]?.map((brand: any) => {
                 return {
                     label: brand.name,
@@ -121,7 +125,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-            console.log("Data: ", data);
+           // console.log("Data: ", data);
             const tempCategories = data[0]?.map((colour: any) => {
                 return {
                     label: colour.name,
@@ -148,7 +152,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-            console.log("Data: ", data);
+           // console.log("Data: ", data);
             const tempCategories = data[0]?.map((size: any) => {
                 return {
                     label: size.name,
@@ -175,7 +179,7 @@ const ProductAddEditModal = (props: Props) => {
             ]);
             const data = await Promise.all(res.map(res => res.json()))
 
-            console.log("Data: ", data);
+            //console.log("Data: ", data);
             const tempCategories = data[0]?.map((uom: any) => {
                 return {
                     label: uom.name,
@@ -192,9 +196,38 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getUomsData();
     }, [])
-    // ________________________________________________________________________________________________________________________
-    console.log("categories: ", categories)
+    // ___________________________________________products_____________________________________________________________________________
+    // const getProductsData = async () => {
+    //     try {
+    //         const res = await Promise.all([
+    //             fetch("http://localhost:8000/api/v1/products/"),
+    //         ]);
+    //         const data = await Promise.all(res.map(res => res.json()))
 
+    //         console.log("Data: ", data);
+    //         const tempCategories = data[0]?.map((product: any) => {
+    //             return {
+    //                 _id:product._id,
+    //                 name:product.name,
+    //             }
+    //         })
+    //         console.log(tempCategories);
+    //         setProducts(tempCategories);
+    //     } catch {
+    //         console.log('coming inside catch block')
+    //         //throw Error("Promise failed");
+    //     }
+    // }
+    // useEffect(() => {
+    //     getProductsData();
+    // }, [])
+
+  // ___________________________________________products________________________________________________________________________
+
+
+
+
+    //console.log("categories: ", categories)
     useEffect(() => {
         props.setIscategoryCreated(false);
     }, [])
@@ -219,10 +252,10 @@ const ProductAddEditModal = (props: Props) => {
             data.set("name", name);
             console.log("data before sending in the payload: ", data)
             setLoading(true)
-            axios.post(`http://localhost:8000/api/v1/${props.slug}`, data).then(
+            axios.post(`http://localhost:8000/api/v1/${props.slug}/`, data).then(
 
                 res => {
-                    console.log(res.data);
+                    console.log ("bapi",res.data);
                     props.setIscategoryCreated(true)
                     setLoading(false);
                 }).catch(err => {
@@ -263,27 +296,27 @@ const ProductAddEditModal = (props: Props) => {
 
 
 
-    const handleSelectCategory = (e) => {
+    const handleSelectCategory = (e:any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedCategory(e.target.value)
     }
 
-    const handleSelectBrand = (e) => {
+    const handleSelectBrand = (e:any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedBrands(e.target.value)
     }
 
-    const handleSelectColour = (e) => {
+    const handleSelectColour = (e:any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedColours(e.target.value)
     }
 
-    const handleSelectSize = (e) => {
+    const handleSelectSize = (e:any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedSizes(e.target.value)
     }
 
-    const handleSelectUoms = (e) => {
+    const handleSelectUoms = (e:any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedUoms(e.target.value)
     }
@@ -291,18 +324,18 @@ const ProductAddEditModal = (props: Props) => {
 
     // Addvariant
 
-    const handleAddVariant = (e) => {
+    const handleAddVariant = (e:any) => {
         e.preventDefault();
         setProductVariants([...productVariants, { colour: '', size: '', uom: '', price: '', packingUnit: '', rewardPoint: '' }])
       }
     
-      const handleVariantChange = (value, key, index) => {
+      const handleVariantChange = (value:any, key:any, index:any) => {
         let tempProductVariants = [...productVariants];
         tempProductVariants[index][key] = value;
         setProductVariants(tempProductVariants);
       }
     
-      const handleDeleteVariant = (index) => {
+      const handleDeleteVariant = (index:any) => {
         let tempProductVariants = [...productVariants];
         tempProductVariants = tempProductVariants.filter((variant, i) => {
           return i != index;

@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import "./dataTable.scss"
+import "./productDataTable.scss"
 import { useEffect, useState } from "react";
 
 
@@ -11,10 +11,11 @@ type Props = {
 }
 
 
-const DataTable = (props: Props) => {
+const ProductDataTable = (props: Props) => {
   const [categoryyy, setCategoryyy] = useState([]);
-  console.log("bapi",categoryyy);
-  
+
+  const [products, setProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState('');
   useEffect(() => {
     fetch(`http://localhost:8000/api/v1/${props.slug}/`)
       .then((res) => {
@@ -37,22 +38,51 @@ const DataTable = (props: Props) => {
     { field: 'id', headerName: 'ID', width: 250 },
     { field: 'name', headerName: ' Name', width: 250 },
 
-    {
-      field: 'image',
-      headerName: 'Image',
-      width: 200,
-      renderCell: (params) => {
-        return <img src={params.row.image} alt='img' />
-      },
-      sortable: false,
-      filterable: false
-    },
-    {
-      field: 'subCategories',
-      headerName: 'SubCategories',
-      width: 200,
-    },
-  ];
+//     {
+//       field: 'image',
+//       headerName: 'Image',
+//       width: 200,
+//       renderCell: (params) => {
+//         return <img src={params.row.image} alt='img' />
+//       },
+//       sortable: false,
+//       filterable: false
+//     },
+//     {
+//       field: 'subCategories',
+//       headerName: 'SubCategories',
+//       width: 200,
+//     },
+   ];
+
+   const getProductsData = async () => {
+    try {
+        const res = await Promise.all([
+            fetch("http://localhost:8000/api/v1/products/"),
+        ]);
+        const data = await Promise.all(res.map(res => res.json()))
+
+        console.log("Data: ", data);
+        const tempProduct = data[0]?.map((product: any) => {
+            return {
+                id:product._id,
+                name:product.name,
+            }
+        })
+        console.log(tempProduct);
+        setProducts(tempProduct);
+    } catch {
+        console.log('coming inside catch block')
+        //throw Error("Promise failed");
+    }
+}
+// console.log(setProducts);
+console.log("bapi",products);
+
+
+useEffect(() => {
+    getProductsData();
+}, [])
 
   const handleEdit = (params: any) => {
     props.setOpen(true);
@@ -77,10 +107,10 @@ const DataTable = (props: Props) => {
   }
 
   return (
-    <div className="dataTable">
+    <div className="productDataTable">
       <DataGrid
         className="dataGrid"
-        rows={categoryyy}
+        rows={products}
         columns={[...columns,actionColumn]}
         initialState={{
           pagination: {
@@ -108,4 +138,4 @@ const DataTable = (props: Props) => {
   )
 }
 
-export default DataTable
+export default ProductDataTable

@@ -1,8 +1,8 @@
 import "./products.scss"
 import { useState } from "react"
-import DataTable from "../../components/dataTable/DataTable"
-import AddEditModal from "../../components/addEditModal/AddEditModal"
+// import DataTable from "../../components/dataTable/DataTable"
 import ProductAddEditModal from "../../components/productAddEditModal/ProductAddEditModal"
+import ProductDataTable from "../../components/productDataTable/ProductDataTable"
 
 const Products = () => {
     const [open, setOpen] = useState(false);
@@ -14,9 +14,10 @@ const Products = () => {
         <h1>Product</h1>
         <button className="addButton" onClick={() => setOpen(true)}>ADD Product</button>
       </div>
-       <DataTable  setEditData={setEditData}  iscategoryCreated={iscategoryCreated} setOpen={setOpen}  slug="product"/>
+       {/* <DataTable  setEditData={setEditData}  iscategoryCreated={iscategoryCreated} setOpen={setOpen}  slug="products"/> */}
+       <ProductDataTable />
       
-      {open && <ProductAddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="product" title="product" />}
+      {open && <ProductAddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="products" title="product" />}
     </div>
   )
 }
