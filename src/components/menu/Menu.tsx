@@ -12,7 +12,7 @@ const Menu = () => {
 
             <Link to={litsItem.url} className="listItem" key={litsItem.id}>
               <img src={litsItem.icon} alt="" />
-              <span className="listItemTitle">{litsItem.title}</span>
+              <span className="listItemTitle">{litsItem.title} </span>
             </Link>
           ))}
 

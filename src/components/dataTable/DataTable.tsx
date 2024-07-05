@@ -10,7 +10,6 @@ type Props = {
   setEditData: React.Dispatch<any>;
 }
 
-
 const DataTable = (props: Props) => {
   const [categoryyy, setCategoryyy] = useState([]);
   console.log("bapi",categoryyy);

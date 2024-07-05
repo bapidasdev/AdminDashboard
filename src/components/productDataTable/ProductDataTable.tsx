@@ -17,23 +17,25 @@ const ProductDataTable = (props: Props) => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState('');
 
-//   useEffect(() => {
-//     fetch(`http://localhost:8000/api/v1/${props.slug}/`)
-//       .then((res) => {
-//         return res.json();
-//       })
-//       .then((data) => {
-//         setCategoryyy(data);
-//       })
-//       .catch((err) => {
-//         console.log(err)
-//       })
-//       ;
-//   }, [props.iscategoryCreated]);
+  useEffect(() => {
+
+    fetch(`http://localhost:8000/api/v1/${props.slug}/`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setCategoryyy(data);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      ;
+  }, [props.iscategoryCreated]);
 
     const handleDelete =(id:number)=>{
       console.log(id + "has been delete")
     }
+    
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 250 },
@@ -59,7 +61,7 @@ const ProductDataTable = (props: Props) => {
    const getProductsData = async () => {
     try {
         const res = await Promise.all([
-            fetch("http://localhost:8000/api/v1/products/"),
+            fetch(`http://localhost:8000/api/v1/${props.slug}/`),
         ]);
         const data = await Promise.all(res.map(res => res.json()))
 
@@ -77,7 +79,7 @@ const ProductDataTable = (props: Props) => {
         //throw Error("Promise failed");
     }
 }
-// console.log(setProducts);
+
 console.log("bapi",products);
 
 
@@ -106,6 +108,8 @@ useEffect(() => {
       )
     }
   }
+
+
 
   return (
     <div className="productDataTable">

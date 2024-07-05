@@ -24,26 +24,6 @@ const ProductAddEditModal = (props: Props) => {
     const [imageURL, setImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
     const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
-    // const [imageURLMultiple, setImageURLMultiple] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
-    const [productGalleryImages, setProductGalleryImages] = useState(null);
-    const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(null);
-    const productGalleryImageRef = useRef(null);
-
-    const handleProductGalleryImage = (e: any) => {
-        setProductGalleryImages(e.target.files);
-        let tempURLs = [];
-        for (let i = 0; i < e.target.files.length; i++) {
-            tempURLs.push(URL.createObjectURL(e.target.files[i]));
-        }
-        setProductGalleryImagesURL(tempURLs);
-    }
-
-    const handleRemoveProductGalleryImage = () => {
-        setProductGalleryImagesURL(null);
-        setProductGalleryImages('');
-        productGalleryImageRef.current.value = "";
-    }
-    // const [imageMultiple, setImageMultiple] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
     const [loading, setLoading] = useState(false)
 
@@ -69,6 +49,29 @@ const ProductAddEditModal = (props: Props) => {
     // const [selectedProducts, setSelectedProducts] = useState('');
 
     const [productVariants, setProductVariants] = useState([]);
+
+    // const [imageURLMultiple, setImageURLMultiple] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
+    const [productGalleryImages, setProductGalleryImages] = useState(null);
+    const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(null);
+    const productGalleryImageRef = useRef(null);
+
+    const handleProductGalleryImage = (e: any) => {
+        setProductGalleryImages(e.target.files);
+        let tempURLs = [];
+        for (let i = 0; i < e.target.files.length; i++) {
+            tempURLs.push(URL.createObjectURL(e.target.files[i]));
+        }
+        setProductGalleryImagesURL(tempURLs);
+    }
+
+    const handleRemoveProductGalleryImage = () => {
+        setProductGalleryImagesURL(null);
+        setProductGalleryImages('');
+        productGalleryImageRef.current.value = "";
+    }
+    // const [imageMultiple, setImageMultiple] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
+
+   
 
     // ________________________________________________________________________________________________________________________
     const getCategoryData = async () => {
@@ -199,36 +202,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getUomsData();
     }, [])
-    // ___________________________________________products_____________________________________________________________________________
-    // const getProductsData = async () => {
-    //     try {
-    //         const res = await Promise.all([
-    //             fetch("http://localhost:8000/api/v1/products/"),
-    //         ]);
-    //         const data = await Promise.all(res.map(res => res.json()))
-
-    //         console.log("Data: ", data);
-    //         const tempCategories = data[0]?.map((product: any) => {
-    //             return {
-    //                 _id:product._id,
-    //                 name:product.name,
-    //             }
-    //         })
-    //         console.log(tempCategories);
-    //         setProducts(tempCategories);
-    //     } catch {
-    //         console.log('coming inside catch block')
-    //         //throw Error("Promise failed");
-    //     }
-    // }
-    // useEffect(() => {
-    //     getProductsData();
-    // }, [])
-
-    // ___________________________________________products________________________________________________________________________
-
-
-
+    
 
     //console.log("categories: ", categories)
     useEffect(() => {
@@ -260,7 +234,6 @@ const ProductAddEditModal = (props: Props) => {
             selectedUoms !== '' && data.set("uom", selectedUoms);
             productPrice !== '' && data.set("price", productPrice);
             productRewardPoint !== '' && data.set("rewardPoint", productRewardPoint);
-
             data.set("productVariants", JSON.stringify(productVariants));
             data.set("category", selectedCategory);
 
@@ -308,8 +281,6 @@ const ProductAddEditModal = (props: Props) => {
     }
     console.log("selectedCategory ", selectedCategory)
 
-
-
     const handleSelectCategory = (e: any) => {
         console.log("value inside handleSelect", e.target.value)
         setSelectedCategory(e.target.value)
@@ -345,7 +316,7 @@ const ProductAddEditModal = (props: Props) => {
 
     const handleVariantChange = (value: any, key: any, index: any) => {
         let tempProductVariants = [...productVariants];
-        tempProductVariants[index][key] = value.id;
+        tempProductVariants[index][key]  = value.id;
         setProductVariants(tempProductVariants);
     }
 
@@ -356,7 +327,8 @@ const ProductAddEditModal = (props: Props) => {
         });
         setProductVariants(tempProductVariants);
     }
-    //// Addvariant
+    
+    
 
     return (
         <>
