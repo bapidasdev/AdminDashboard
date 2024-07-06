@@ -20,7 +20,7 @@ import Colour from "./pages/colour/Colour";
 import Brand from "./pages/brand/Brand";
 import Size from "./pages/size/Size";
 import Uom from "./pages/uom/Uom";
-import SubCategory from "./pages/subCategory/SubCategory";
+// import SubCategory from "./pages/subCategory/SubCategory";
 import Product from "./pages/product/Product";
 import Products from "./pages/products/Products";
 
@@ -68,10 +68,10 @@ function App() {
           path: "/categories",
           element: <Users />,
         },
-        {
-          path: "/subCategory",
-          element: <SubCategory />,
-        },
+        // {
+        //   path: "/subCategory",
+        //   element: <SubCategory />,
+        // },
         {
           path: "/brand",
           element: <Brand />,

@@ -88,7 +88,7 @@ const DataTable = (props: Props) => {
             },
           },
         }}
-        slots={{ toolbar: GridToolbar }}
+        
         slotProps={{
           toolbar: {
             showQuickFilter: true,

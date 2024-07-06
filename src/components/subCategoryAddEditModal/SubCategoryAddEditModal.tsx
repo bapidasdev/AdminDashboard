@@ -4,7 +4,7 @@ import "./subCategoryAddEditModal.scss"
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 type Props = {
     slug: string;
     //columns: GridColDef[];
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setSubCategoriesOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
@@ -75,7 +75,7 @@ const SubCategoryAddEditModal = (props: Props) => {
 
         //performing ADD
         if (props.editData == null) {
-            props.setOpen(false)
+            props.setSubCategoriesOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -98,7 +98,7 @@ const SubCategoryAddEditModal = (props: Props) => {
                 })
         } else {
             //performing EDIT
-            props.setOpen(false)
+            props.setSubCategoriesOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -122,7 +122,7 @@ const SubCategoryAddEditModal = (props: Props) => {
     }
 
     const handleClose = () => {
-        props.setOpen(false);
+        props.setSubCategoriesOpen(false);
         props.setEditData(null);
     }
     console.log("selectedCategory ", selectedCategory)
@@ -136,7 +136,7 @@ const SubCategoryAddEditModal = (props: Props) => {
             {loading && (
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={loading}
+                    subCategoriesOpen={loading}
                 >
                     <CircularProgress color="inherit" />
                 </Backdrop>

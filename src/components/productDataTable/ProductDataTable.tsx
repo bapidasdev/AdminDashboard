@@ -124,7 +124,7 @@ useEffect(() => {
             },
           },
         }}
-        slots={{ toolbar: GridToolbar }}
+        
         slotProps={{
           toolbar: {
             showQuickFilter: true,

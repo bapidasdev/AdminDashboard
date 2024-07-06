@@ -345,7 +345,8 @@ const ProductAddEditModal = (props: Props) => {
                     <span className="close" onClick={() => handleClose()}>
                         X
                     </span>
-                    <h1>Add New {props.title}</h1>
+                    <h1>Add New {props.title} </h1>
+                    
                     <form onSubmit={handleSubmit}>
                         {columns
                             .filter((item) => item.field !== "id" && item.field !== "img")
@@ -484,7 +485,7 @@ const ProductAddEditModal = (props: Props) => {
                                 }}
                             />
                             <div>
-                                {imageURL ? <img src={imageURL} width={200} height={100} alt={`${props.slug} image`} /> : ""}
+                                {imageURL ? <img src={imageURL} width={100} height={100} alt={`${props.slug} image`} /> : ""}
                             </div>
 
                             {imageURL && <div className='delete_div'>
@@ -545,7 +546,7 @@ const ProductAddEditModal = (props: Props) => {
                                             <div className='input_div'>
                                                 <div className='addInputBox'>
                                                     <FormControl>
-                                                        <InputLabel id="varian-colour-select" style={{ color: 'white' }}>Colour</InputLabel>
+                                                        <InputLabel id="variant-colour-select" style={{ color: 'white' }}>Colour</InputLabel>
                                                         <Select
                                                             className='productDropDown'
                                                             labelId="variant-colour-select"
@@ -561,11 +562,11 @@ const ProductAddEditModal = (props: Props) => {
 
                                                 <div className='addInputBox'>
                                                     <FormControl>
-                                                        <InputLabel id="variant-category-select" style={{ color: 'white' }}>Size</InputLabel>
+                                                        <InputLabel id="variant-size-select" style={{ color: 'white' }}>Size</InputLabel>
                                                         <Select
                                                             style={{ width: '250px', marginTop: "10px" }}
                                                             className='productDropDown'
-                                                            labelId="variant-category-select"
+                                                            labelId="variant-size-select"
                                                             id="select"
                                                             value={productVariants[index].sizeValue}
                                                             label="Category"
@@ -578,11 +579,11 @@ const ProductAddEditModal = (props: Props) => {
 
                                                 <div className='addInputBox'>
                                                     <FormControl >
-                                                        <InputLabel id="variant-category-select" style={{ color: 'white' }}>Unit Of Measure</InputLabel>
+                                                        <InputLabel id="variant-uom-select" style={{ color: 'white' }}>Unit Of Measure</InputLabel>
                                                         <Select
                                                             style={{ marginTop: "10px" }}
                                                             className='productDropDown'
-                                                            labelId="variant-category-select"
+                                                            labelId="variant-uom-select"
                                                             id="select"
                                                             value={productVariants[index].uomValue}
                                                             label="Category"

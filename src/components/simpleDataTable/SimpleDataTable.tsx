@@ -78,7 +78,7 @@ const SimpleDataTable = (props: Props) => {
             },
           },
         }}
-        slots={{ toolbar: GridToolbar }}
+        
         slotProps={{
           toolbar: {
             showQuickFilter: true,
