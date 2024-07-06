@@ -236,8 +236,6 @@ const ProductAddEditModal = (props: Props) => {
             productRewardPoint !== '' && data.set("rewardPoint", productRewardPoint);
             data.set("productVariants", JSON.stringify(productVariants));
             data.set("category", selectedCategory);
-
-            console.log("data before sending in the payload: ", data)
             setLoading(true)
             axios.post(`http://localhost:8000/api/v1/${props.slug}/`, data).then(
 
@@ -316,7 +314,8 @@ const ProductAddEditModal = (props: Props) => {
 
     const handleVariantChange = (value: any, key: any, index: any) => {
         let tempProductVariants = [...productVariants];
-        tempProductVariants[index][key]  = value.id;
+        tempProductVariants[index][key]  = ['price', 'packingUnit', 'rewardPoint'].includes(key) ? value : value.id;
+        tempProductVariants[index][`${key}Value`] = !['price', 'packingUnit', 'rewardPoint'].includes(key) ? value : undefined;
         setProductVariants(tempProductVariants);
     }
 
@@ -545,21 +544,53 @@ const ProductAddEditModal = (props: Props) => {
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             <div className='input_div'>
                                                 <div className='addInputBox'>
-                                                    <label>Colour :</label>
-                                                    <input type='text' name='colour' placeholder='Colour'
-                                                        value={productVariants[index].colour} onChange={(e) => { handleVariantChange(e.target.value, 'colour', index) }} />
+                                                    <FormControl>
+                                                        <InputLabel id="varian-colour-select" style={{ color: 'white' }}>Colour</InputLabel>
+                                                        <Select
+                                                            className='productDropDown'
+                                                            labelId="variant-colour-select"
+                                                            id="select"
+                                                            value={productVariants[index].colourValue}
+                                                            label="Category"
+                                                            onChange={(e) => { handleVariantChange(e.target.value, 'colour', index) }}
+                                                        >
+                                                            {colours?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label}</MenuItem>))}
+                                                        </Select>
+                                                    </FormControl>
                                                 </div>
 
                                                 <div className='addInputBox'>
-                                                    <label>Size :</label>
-                                                    <input type='text' name='size' placeholder='Size'
-                                                        value={productVariants[index].size} onChange={(e) => { handleVariantChange(e.target.value, 'size', index) }} />
+                                                    <FormControl>
+                                                        <InputLabel id="variant-category-select" style={{ color: 'white' }}>Size</InputLabel>
+                                                        <Select
+                                                            style={{ width: '250px', marginTop: "10px" }}
+                                                            className='productDropDown'
+                                                            labelId="variant-category-select"
+                                                            id="select"
+                                                            value={productVariants[index].sizeValue}
+                                                            label="Category"
+                                                            onChange={(e) => { handleVariantChange(e.target.value, 'size', index) }}
+                                                        >
+                                                            {sizes?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label}</MenuItem>))}
+                                                        </Select>
+                                                    </FormControl>
                                                 </div>
 
                                                 <div className='addInputBox'>
-                                                    <label>UOM :</label>
-                                                    <input type='text' name='uom' placeholder='Unit of Measurement'
-                                                        value={productVariants[index].uom} onChange={(e) => { handleVariantChange(e.target.value, 'uom', index) }} />
+                                                    <FormControl >
+                                                        <InputLabel id="variant-category-select" style={{ color: 'white' }}>Unit Of Measure</InputLabel>
+                                                        <Select
+                                                            style={{ marginTop: "10px" }}
+                                                            className='productDropDown'
+                                                            labelId="variant-category-select"
+                                                            id="select"
+                                                            value={productVariants[index].uomValue}
+                                                            label="Category"
+                                                            onChange={(e) => { handleVariantChange(e.target.value, 'uom', index) }}
+                                                        >
+                                                            {uoms?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label}</MenuItem>))}
+                                                        </Select>
+                                                    </FormControl>
                                                 </div>
 
                                                 <div className='addInputBox'>

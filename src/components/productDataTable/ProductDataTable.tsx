@@ -65,11 +65,11 @@ const ProductDataTable = (props: Props) => {
         ]);
         const data = await Promise.all(res.map(res => res.json()))
 
-        console.log("Data: ", data);
         const tempProduct = data[0]?.map((product: any) => {
             return {
-                id:product._id,
-                name:product.name,
+                id: product._id,
+                name: product.name,
+                image: product.image
             }
         })
         console.log(tempProduct);
@@ -120,7 +120,7 @@ useEffect(() => {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 7,
+              pageSize: 10,
             },
           },
         }}
