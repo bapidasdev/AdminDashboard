@@ -51,11 +51,22 @@ const ProductDataTable = (props: Props) => {
       sortable: false,
       filterable: false
     },
-    // {
-    //   field: 'subCategories',
-    //   headerName: 'SubCategories',
-    //   width: 200,
-    // },
+    {
+      field: 'gallery',
+      headerName: 'Gallery',
+      width: 400,
+      renderCell: (params) => {
+        const images = params.row.images;
+        if(images?.length > 0) {
+          return (<>
+            {images?.map((image) => (<img src={image} alt='gallery-image' />))}
+          </>)
+        }
+        else {
+          return null;
+        }
+      }
+    }
    ];
 
    const getProductsData = async () => {
@@ -69,19 +80,24 @@ const ProductDataTable = (props: Props) => {
             return {
                 id: product._id,
                 name: product.name,
-                image: product.image
+                image: product.image,
+                images: product.images,
+                category: product.category,
+                brand: product.brand,
+                colour: product.colour,
+                size: product.size,
+                uom: product.uom,
+                price: product.price,
+                rewardPoint: product.rewardPoint,
+                productVariants: product.productVariants
             }
         })
         console.log(tempProduct);
         setProducts(tempProduct);
     } catch {
         console.log('coming inside catch block')
-        //throw Error("Promise failed");
     }
 }
-
-console.log("bapi",products);
-
 
 useEffect(() => {
     getProductsData();

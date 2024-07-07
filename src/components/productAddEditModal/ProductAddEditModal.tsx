@@ -21,39 +21,51 @@ type Props = {
 
 const ProductAddEditModal = (props: Props) => {
     const [name, setName] = useState<string>(props.editData?.name ? props.editData?.name : '');
-    const [imageURL, setImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
-    const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
+
+    const [productImageURL, setProductImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
+    const [productImage, setProductImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
 
     const [loading, setLoading] = useState(false)
 
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState(props.editData?.category ? props.editData?.category._id : '');
 
     const [brands, setBrands] = useState([]);
-    const [selectedBrands, setSelectedBrands] = useState('');
+    const [selectedBrands, setSelectedBrands] = useState(props.editData?.brand ? props.editData?.brand._id : '');
 
     const [colours, setColours] = useState([]);
-    const [selectedColours, setSelectedColours] = useState('');
+    const [selectedColours, setSelectedColours] = useState(props.editData?.colour ? props.editData?.colour._id : '');
 
     const [sizes, setSizes] = useState([]);
-    const [selectedSizes, setSelectedSizes] = useState('');
+    const [selectedSizes, setSelectedSizes] = useState(props.editData?.size ? props.editData?.size._id : '');
 
     const [uoms, setUoms] = useState([]);
-    const [selectedUoms, setSelectedUoms] = useState('');
+    const [selectedUoms, setSelectedUoms] = useState(props.editData?.uom ? props.editData?.uom._id : '');
 
-    const [productPrice, setProductPrice] = useState("");
-    const [productRewardPoint, setProductRewardPoint] = useState("");
-
-    // const [products, setProducts] = useState([]);
-    // const [selectedProducts, setSelectedProducts] = useState('');
+    const [productPrice, setProductPrice] = useState(props.editData?.price ? props.editData?.price : '');
+    const [productRewardPoint, setProductRewardPoint] = useState(props.editData?.rewardPoint ? props.editData?.rewardPoint : '');
 
     const [productVariants, setProductVariants] = useState([]);
-
-    // const [imageURLMultiple, setImageURLMultiple] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
-    const [productGalleryImages, setProductGalleryImages] = useState(null);
-    const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(null);
+    
+    const [productGalleryImages, setProductGalleryImages] = useState(props.editData?.images ? props.editData?.images : null);
+    const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(props.editData?.images ? props.editData?.images : null);
     const productGalleryImageRef = useRef(null);
+    const productImageRef = useRef(null);
+
+    useEffect(() => {
+        const tempProductVariants = props?.editData?.productVariants?.map(variant => {
+            return {
+              colour: variant?.colour._id,
+              size: variant?.size._id,
+              uom: variant?.uom._id,
+              packingUnit: variant?.packingUnit,
+              price: variant?.price,
+              rewardPoint: variant?.rewardPoint
+            }
+          });
+          setProductVariants(tempProductVariants);
+    }, [props.editData]);
 
     const handleProductGalleryImage = (e: any) => {
         setProductGalleryImages(e.target.files);
@@ -67,13 +79,15 @@ const ProductAddEditModal = (props: Props) => {
     const handleRemoveProductGalleryImage = () => {
         setProductGalleryImagesURL(null);
         setProductGalleryImages('');
-        productGalleryImageRef.current.value = "";
+        productGalleryImageRef.current.value = '';
     }
-    // const [imageMultiple, setImageMultiple] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
-   
+    const handleRemoveProductImage = () => {
+        setProductImageURL(null);
+        setProductImage('');
+        productImageRef.current.value = '';
+    }
 
-    // ________________________________________________________________________________________________________________________
     const getCategoryData = async () => {
         try {
             const res = await Promise.all([
@@ -98,7 +112,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getCategoryData();
     }, [])
-    // ________________________________________________________________________________________________________________________
+    
     const getBrandsData = async () => {
         try {
             const res = await Promise.all([
@@ -123,7 +137,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getBrandsData();
     }, [])
-    // ________________________________________________________________________________________________________________________
+    
     const getColoursData = async () => {
         try {
             const res = await Promise.all([
@@ -148,9 +162,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getColoursData();
     }, [])
-    // ________________________________________________________________________________________________________________________
-
-    // ________________________________________________________________________________________________________________________
+    
     const getSizesData = async () => {
         try {
             const res = await Promise.all([
@@ -175,9 +187,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getSizesData();
     }, [])
-    // ________________________________________________________________________________________________________________________
-
-    // ________________________________________________________________________________________________________________________
+    
     const getUomsData = async () => {
         try {
             const res = await Promise.all([
@@ -196,15 +206,12 @@ const ProductAddEditModal = (props: Props) => {
             setUoms(tempCategories);
         } catch {
             console.log('coming inside catch block')
-            //throw Error("Promise failed");
         }
     }
     useEffect(() => {
         getUomsData();
     }, [])
     
-
-    //console.log("categories: ", categories)
     useEffect(() => {
         props.setIscategoryCreated(false);
     }, [])
@@ -225,9 +232,8 @@ const ProductAddEditModal = (props: Props) => {
                 return;
             }
             let data = new FormData();
-            image && data.append("image", image); //bypass this line for UoM and size
+            productImage && data.append("image", productImage);
             data.set("name", name);
-            //data append korbo
             selectedBrands !== '' && data.set("brand", selectedBrands);
             selectedColours !== '' && data.set("colour", selectedColours);
             selectedSizes !== '' && data.set("size", selectedSizes);
@@ -238,11 +244,60 @@ const ProductAddEditModal = (props: Props) => {
             data.set("category", selectedCategory);
             setLoading(true)
             axios.post(`http://localhost:8000/api/v1/${props.slug}/`, data).then(
-
                 res => {
-                    console.log("bapi", res.data);
-                    props.setIscategoryCreated(true)
-                    setLoading(false);
+                    if (res?.data?.id && productGalleryImages) {
+                        let galleryData = new FormData();
+                        for (let i = 0; i < productGalleryImages?.length; i++) {
+                            galleryData.append(`images`, productGalleryImages[i]);
+                        }
+                        axios.put(`http://localhost:8000/api/v1/${props.slug}/gallery-images/${res.data.id}`, galleryData).then(
+                            res => {
+                                // setSuccess(true);
+                                // setSuccessMessage("Product created successfully with gallery images!");
+                                //clearForm();
+                                // setTimeout(() => {
+                                //     setSuccess(false);
+                                //     setSuccessMessage('');
+                                // }, 6000);
+                                setLoading(false);
+                            }
+                        ).catch(err => {
+                            console.log("Error while adding gallary photos to the newly created product", err);
+    
+                            //in this case delete the product created above
+                            axios.delete(`http://localhost:8000/api/v1/${props.slug}/${res.data.id}`).then(res => {
+                                // setError(true);
+                                // setErrorMessage("Error while adding gallary photos! Please try again after changing them");
+                                // setTimeout(() => {
+                                //     setError(false);
+                                //     setErrorMessage('');
+                                // }, 6000);
+                                setLoading(false);
+                            }).catch(err => {
+                                console.log("something went wrong please contact support")
+                                // setError(true);
+                                // setErrorMessage(`Something went wrong! Please contact support by shaing this id: ${res.data.id}`)
+                                // setTimeout(() => {
+                                //     setError(false);
+                                //     setErrorMessage('');
+                                // }, 12000);
+                                setLoading(false);
+    
+                            })
+                        })
+                    }
+                    else {
+                        // setSuccess(true);
+                        // setSuccessMessage("Product created successfully with no gallery image(s)");
+                        // setTimeout(() => {
+                        //     setSuccess(false);
+                        //     setSuccessMessage('');
+                        // }, 6000);
+                        setLoading(false);
+                    }
+                    // console.log("bapi", res.data);
+                    // props.setIscategoryCreated(true)
+                    // setLoading(false);
                 }).catch(err => {
                     console.log(err);
                     props.setIscategoryCreated(false)
@@ -256,17 +311,24 @@ const ProductAddEditModal = (props: Props) => {
                 return;
             }
             let data = new FormData();
-            image && typeof (image) === 'object' && data.append("image", image); //bypass this line for UoM and size
+            productImage && typeof (productImage) === 'object' && data.append("image", productImage);
+            productGalleryImages && typeof (productGalleryImages) === 'object' && data.append("images", productGalleryImages);
             data.set("name", name);
+            selectedBrands !== '' && data.set("brand", selectedBrands);
+            selectedColours !== '' && data.set("colour", selectedColours);
+            selectedSizes !== '' && data.set("size", selectedSizes);
+            selectedUoms !== '' && data.set("uom", selectedUoms);
+            productPrice !== '' && data.set("price", productPrice);
+            productRewardPoint !== '' && data.set("rewardPoint", productRewardPoint);
+            data.set("productVariants", JSON.stringify(productVariants));
+            data.set("category", selectedCategory);
             console.log("data before sending in the payload: ", data)
             setLoading(true)
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
-                    console.log(res.data);
                     props.setIscategoryCreated(true)
                     setLoading(false)
                 }).catch(err => {
-                    console.log(err);
                     props.setIscategoryCreated(false)
                     setLoading(true)
                 })
@@ -277,30 +339,24 @@ const ProductAddEditModal = (props: Props) => {
         props.setOpen(false);
         props.setEditData(null);
     }
-    console.log("selectedCategory ", selectedCategory)
 
     const handleSelectCategory = (e: any) => {
-        console.log("value inside handleSelect", e.target.value)
         setSelectedCategory(e.target.value)
     }
 
     const handleSelectBrand = (e: any) => {
-        console.log("value inside handleSelect", e.target.value)
         setSelectedBrands(e.target.value)
     }
 
     const handleSelectColour = (e: any) => {
-        console.log("value inside handleSelect", e.target.value)
         setSelectedColours(e.target.value)
     }
 
     const handleSelectSize = (e: any) => {
-        console.log("value inside handleSelect", e.target.value)
         setSelectedSizes(e.target.value)
     }
 
     const handleSelectUoms = (e: any) => {
-        console.log("value inside handleSelect", e.target.value)
         setSelectedUoms(e.target.value)
     }
 
@@ -313,9 +369,9 @@ const ProductAddEditModal = (props: Props) => {
     }
 
     const handleVariantChange = (value: any, key: any, index: any) => {
+        console.log("Avinash value",value)
         let tempProductVariants = [...productVariants];
-        tempProductVariants[index][key]  = ['price', 'packingUnit', 'rewardPoint'].includes(key) ? value : value.id;
-        tempProductVariants[index][`${key}Value`] = !['price', 'packingUnit', 'rewardPoint'].includes(key) ? value : undefined;
+        tempProductVariants[index][key]  = value;
         setProductVariants(tempProductVariants);
     }
 
@@ -327,7 +383,7 @@ const ProductAddEditModal = (props: Props) => {
         setProductVariants(tempProductVariants);
     }
     
-    
+    console.log("avinash productsVariants",productVariants)
 
     return (
         <>
@@ -345,7 +401,7 @@ const ProductAddEditModal = (props: Props) => {
                     <span className="close" onClick={() => handleClose()}>
                         X
                     </span>
-                    <h1>Add New {props.title} </h1>
+                    <h1>{props.editData != null ? 'Edit' : 'Add New'} {props.title} </h1>
                     
                     <form onSubmit={handleSubmit}>
                         {columns
@@ -356,10 +412,6 @@ const ProductAddEditModal = (props: Props) => {
                                     <input className='productInputField' type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                                 </div>
                             ))}
-                        {/* //hide this below image section for UoM and size */}
-
-
-                        {/* ____________________________ ____________________________ ____________________________ */}
                         <div style={{ marginTop: "20px" }}>
 
                             <FormControl >
@@ -478,30 +530,25 @@ const ProductAddEditModal = (props: Props) => {
                             <label>Product image :</label>
                             <input type="file" accept='image/*' placeholder="upload image"
                                 onChange={({ target: { files } }) => {
-                                    files && files[0] && setImage(files[0])
+                                    files && files[0] && setProductImage(files[0])
                                     if (files) {
-                                        setImageURL(URL.createObjectURL(files[0]))
+                                        setProductImageURL(URL.createObjectURL(files[0]))
                                     }
                                 }}
+                                ref={productImageRef}
                             />
                             <div>
-                                {imageURL ? <img src={imageURL} width={100} height={100} alt={`${props.slug} image`} /> : ""}
+                                {productImageURL ? <img src={productImageURL} width={100} height={100} alt={`${props.slug} image`} /> : ""}
                             </div>
 
-                            {imageURL && <div className='delete_div'>
+                            {productImageURL && <div className='delete_div'>
                                 <span>
-                                    <button className='delete' onClick={() => {
-                                        setImageURL(null)
-                                        setImage("")
-                                    }} >
+                                    <button className='delete' onClick={() => handleRemoveProductImage()} >
                                         Remove
                                     </button>
                                 </span>
                             </div>}
                         </div>
-
-                        {/* ____________________________ ____________________________ ____________________________ */}
-
 
                         <div className='items productImageUpload' >
                             <label >Product Gallery Images : </label>
@@ -519,17 +566,13 @@ const ProductAddEditModal = (props: Props) => {
                             {productGalleryImagesURL && <div className='delete_div'>
                                 <span>
                                     <button className='delete' onClick={() => {
-                                        handleRemoveProductGalleryImage
+                                        handleRemoveProductGalleryImage()
                                     }} >
                                         Remove
                                     </button>
                                 </span>
                             </div>}
                         </div>
-
-                        {/* ____________________________ ____________________________ ____________________________ */}
-
-                        {/* Add variant */}
 
                         <div className='productAddVariant'>
                             <span style={{ marginRight: "10px" }}>Add Product Variant :</span>
@@ -551,7 +594,7 @@ const ProductAddEditModal = (props: Props) => {
                                                             className='productDropDown'
                                                             labelId="variant-colour-select"
                                                             id="select"
-                                                            value={productVariants[index].colourValue}
+                                                            value={productVariants[index].colour}
                                                             label="Category"
                                                             onChange={(e) => { handleVariantChange(e.target.value, 'colour', index) }}
                                                         >
@@ -568,7 +611,7 @@ const ProductAddEditModal = (props: Props) => {
                                                             className='productDropDown'
                                                             labelId="variant-size-select"
                                                             id="select"
-                                                            value={productVariants[index].sizeValue}
+                                                            value={productVariants[index].size}
                                                             label="Category"
                                                             onChange={(e) => { handleVariantChange(e.target.value, 'size', index) }}
                                                         >
@@ -585,7 +628,7 @@ const ProductAddEditModal = (props: Props) => {
                                                             className='productDropDown'
                                                             labelId="variant-uom-select"
                                                             id="select"
-                                                            value={productVariants[index].uomValue}
+                                                            value={productVariants[index].uom}
                                                             label="Category"
                                                             onChange={(e) => { handleVariantChange(e.target.value, 'uom', index) }}
                                                         >
