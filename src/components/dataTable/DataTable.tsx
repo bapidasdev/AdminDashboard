@@ -12,7 +12,6 @@ type Props = {
 
 const DataTable = (props: Props) => {
   const [categoryyy, setCategoryyy] = useState([]);
-  console.log("bapi",categoryyy);
   
   useEffect(() => {
     fetch(`http://localhost:8000/api/v1/${props.slug}/`)
