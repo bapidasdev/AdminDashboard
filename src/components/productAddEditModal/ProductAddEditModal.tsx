@@ -1,6 +1,5 @@
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import Select from '@mui/material/Select';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
@@ -11,7 +10,6 @@ import { MdDelete } from 'react-icons/md';
 
 type Props = {
     slug: string;
-    //columns: GridColDef[];
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
@@ -54,17 +52,19 @@ const ProductAddEditModal = (props: Props) => {
     const productImageRef = useRef(null);
 
     useEffect(() => {
-        const tempProductVariants = props?.editData?.productVariants?.map(variant => {
-            return {
-              colour: variant?.colour._id,
-              size: variant?.size._id,
-              uom: variant?.uom._id,
-              packingUnit: variant?.packingUnit,
-              price: variant?.price,
-              rewardPoint: variant?.rewardPoint
-            }
-          });
-          setProductVariants(tempProductVariants);
+        if(props.editData) {
+            const tempProductVariants = props?.editData?.productVariants?.map(variant => {
+                return {
+                  colour: variant?.colour._id,
+                  size: variant?.size._id,
+                  uom: variant?.uom._id,
+                  packingUnit: variant?.packingUnit,
+                  price: variant?.price,
+                  rewardPoint: variant?.rewardPoint
+                }
+              });
+              setProductVariants(tempProductVariants);
+        }
     }, [props.editData]);
 
     const handleProductGalleryImage = (e: any) => {
@@ -226,7 +226,6 @@ const ProductAddEditModal = (props: Props) => {
 
         //performing ADD
         if (props.editData == null) {
-            props.setOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -260,6 +259,7 @@ const ProductAddEditModal = (props: Props) => {
                                 //     setSuccessMessage('');
                                 // }, 6000);
                                 setLoading(false);
+                                props.setOpen(false)
                             }
                         ).catch(err => {
                             console.log("Error while adding gallary photos to the newly created product", err);
@@ -294,6 +294,7 @@ const ProductAddEditModal = (props: Props) => {
                         //     setSuccessMessage('');
                         // }, 6000);
                         setLoading(false);
+                        props.setOpen(false)
                     }
                     // console.log("bapi", res.data);
                     // props.setIscategoryCreated(true)
@@ -305,7 +306,6 @@ const ProductAddEditModal = (props: Props) => {
                 })
         } else {
             //performing EDIT
-            props.setOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -327,10 +327,12 @@ const ProductAddEditModal = (props: Props) => {
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
                     props.setIscategoryCreated(true)
-                    setLoading(false)
+                    setLoading(false);
+                    props.setOpen(false);
                 }).catch(err => {
                     props.setIscategoryCreated(false)
-                    setLoading(true)
+                    setLoading(false);
+                    props.setOpen(false);
                 })
         }
     }
@@ -382,8 +384,6 @@ const ProductAddEditModal = (props: Props) => {
         });
         setProductVariants(tempProductVariants);
     }
-    
-    console.log("avinash productsVariants",productVariants)
 
     return (
         <>

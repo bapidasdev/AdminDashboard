@@ -1,4 +1,6 @@
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import "./productDataTable.scss"
 import { useEffect, useState } from "react";
 
@@ -125,11 +127,22 @@ useEffect(() => {
     }
   }
 
-
+  if(products?.length == 0) {
+    return (
+      <>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={products?.length == 0}
+        >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+      </>
+    )
+  }
 
   return (
     <div className="productDataTable">
-      <DataGrid
+      {products.length>0 && <DataGrid
         className="dataGrid"
         rows={products}
         columns={[...columns,actionColumn]}
@@ -154,7 +167,7 @@ useEffect(() => {
         disableDensitySelector
         disableColumnSelector
 
-      />
+      />}
     </div>
   )
 }
