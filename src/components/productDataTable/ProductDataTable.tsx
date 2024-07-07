@@ -7,32 +7,18 @@ import { useEffect, useState } from "react";
 
 type Props = {
   slug: string;
-  iscategoryCreated: any;
+  isProductCreated: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setEditData: React.Dispatch<any>;
 }
 
 
 const ProductDataTable = (props: Props) => {
-  const [categoryyy, setCategoryyy] = useState([]);
-
   const [products, setProducts] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState('');
 
   useEffect(() => {
-
-    fetch(`http://localhost:8000/api/v1/${props.slug}/`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setCategoryyy(data);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      ;
-  }, [props.iscategoryCreated]);
+    getProductsData();
+  }, [props.isProductCreated]);
 
     const handleDelete =(id:number)=>{
       console.log(id + "has been delete")
@@ -42,12 +28,11 @@ const ProductDataTable = (props: Props) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 250 },
     { field: 'name', headerName: ' Name', width: 250 },
-
     {
       field: 'image',
       headerName: 'Image',
       width: 200,
-      renderCell: (params) => {
+      renderCell: (params: any) => {
         return <img src={params.row.image} alt='img' />
       },
       sortable: false,
@@ -57,11 +42,11 @@ const ProductDataTable = (props: Props) => {
       field: 'gallery',
       headerName: 'Gallery',
       width: 400,
-      renderCell: (params) => {
+      renderCell: (params: any) => {
         const images = params.row.images;
         if(images?.length > 0) {
           return (<>
-            {images?.map((image) => (<img src={image} alt='gallery-image' />))}
+            {images?.map((image: any) => (<img src={image} alt='gallery-image' />))}
           </>)
         }
         else {
@@ -152,8 +137,7 @@ useEffect(() => {
               pageSize: 10,
             },
           },
-        }}
-        
+        }} 
         slotProps={{
           toolbar: {
             showQuickFilter: true,

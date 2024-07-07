@@ -1,12 +1,13 @@
-import "./products.scss"
-import { useState } from "react"
-// import DataTable from "../../components/dataTable/DataTable"
+import { useState } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ProductAddEditModal from "../../components/productAddEditModal/ProductAddEditModal"
 import ProductDataTable from "../../components/productDataTable/ProductDataTable"
+import "./products.scss";
 
 const Products = () => {
     const [open, setOpen] = useState(false);
-    const [iscategoryCreated, setIscategoryCreated] = useState(false);
+    const [isProductCreated, setIsProductCreated] = useState(false);
     const [editData, setEditData] = useState<any>(null);
   return (
     <div className='products'>
@@ -14,10 +15,28 @@ const Products = () => {
         <h1>Product</h1>
         <button className="addButton" onClick={() => setOpen(true)}>ADD Product</button>
       </div>
-       {/* <DataTable  setEditData={setEditData}  iscategoryCreated={iscategoryCreated} setOpen={setOpen}  slug="products"/> */}
-       <ProductDataTable setOpen={setOpen}  slug="products" setEditData={setEditData}  iscategoryCreated={iscategoryCreated}/>
-      
-      {open && <ProductAddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="products" title="product" />}
+                <ToastContainer
+                  position="top-left"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                  />
+       <ProductDataTable setOpen={setOpen}  slug="products" setEditData={setEditData}  isProductCreated={isProductCreated}/>
+      {open && 
+      <ProductAddEditModal 
+        setEditData={setEditData} 
+        editData={editData}  
+        setIsProductCreated={setIsProductCreated} 
+        setOpen={setOpen}
+        slug="products" 
+        title="product" 
+      />}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { InputLabel, MenuItem } from '@mui/material';
@@ -11,10 +12,10 @@ import { MdDelete } from 'react-icons/md';
 type Props = {
     slug: string;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsProductCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
-    title: string
+    title: string;
 }
 
 const ProductAddEditModal = (props: Props) => {
@@ -48,6 +49,7 @@ const ProductAddEditModal = (props: Props) => {
     
     const [productGalleryImages, setProductGalleryImages] = useState(props.editData?.images ? props.editData?.images : null);
     const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(props.editData?.images ? props.editData?.images : null);
+    
     const productGalleryImageRef = useRef(null);
     const productImageRef = useRef(null);
 
@@ -213,7 +215,7 @@ const ProductAddEditModal = (props: Props) => {
     }, [])
     
     useEffect(() => {
-        props.setIscategoryCreated(false);
+        props.setIsProductCreated(false);
     }, [])
 
     const columns = [
@@ -251,57 +253,81 @@ const ProductAddEditModal = (props: Props) => {
                         }
                         axios.put(`http://localhost:8000/api/v1/${props.slug}/gallery-images/${res.data.id}`, galleryData).then(
                             res => {
-                                // setSuccess(true);
-                                // setSuccessMessage("Product created successfully with gallery images!");
                                 //clearForm();
-                                // setTimeout(() => {
-                                //     setSuccess(false);
-                                //     setSuccessMessage('');
-                                // }, 6000);
+                                toast.success('🦄 Product created successfully with gallery images!', {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                    });
                                 setLoading(false);
-                                props.setOpen(false)
+                                props.setOpen(false);
+                                props.setIsProductCreated(true);
                             }
                         ).catch(err => {
                             console.log("Error while adding gallary photos to the newly created product", err);
     
                             //in this case delete the product created above
                             axios.delete(`http://localhost:8000/api/v1/${props.slug}/${res.data.id}`).then(res => {
-                                // setError(true);
-                                // setErrorMessage("Error while adding gallary photos! Please try again after changing them");
-                                // setTimeout(() => {
-                                //     setError(false);
-                                //     setErrorMessage('');
-                                // }, 6000);
+                                toast.error('Em! Error while adding gallary photos! Please try again after changing them', {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                    });
                                 setLoading(false);
                             }).catch(err => {
                                 console.log("something went wrong please contact support")
-                                // setError(true);
-                                // setErrorMessage(`Something went wrong! Please contact support by shaing this id: ${res.data.id}`)
-                                // setTimeout(() => {
-                                //     setError(false);
-                                //     setErrorMessage('');
-                                // }, 12000);
+                                toast.error(`Something went wrong! Please contact support by shaing this id: ${res.data.id}`, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                    });
                                 setLoading(false);
-    
                             })
                         })
                     }
                     else {
-                        // setSuccess(true);
-                        // setSuccessMessage("Product created successfully with no gallery image(s)");
-                        // setTimeout(() => {
-                        //     setSuccess(false);
-                        //     setSuccessMessage('');
-                        // }, 6000);
+                        toast.success('Yey! Product created successfully with no gallery image(s)', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            });
                         setLoading(false);
-                        props.setOpen(false)
+                        props.setOpen(false);
+                        props.setIsProductCreated(true);
                     }
-                    // console.log("bapi", res.data);
-                    // props.setIscategoryCreated(true)
-                    // setLoading(false);
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    toast.error('Em! Error while creating new Product', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
+                    props.setIsProductCreated(false)
                     setLoading(false);
                 })
         } else {
@@ -322,17 +348,38 @@ const ProductAddEditModal = (props: Props) => {
             productRewardPoint !== '' && data.set("rewardPoint", productRewardPoint);
             data.set("productVariants", JSON.stringify(productVariants));
             data.set("category", selectedCategory);
-            console.log("data before sending in the payload: ", data)
-            setLoading(true)
+            setLoading(true);
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
-                    props.setIscategoryCreated(true)
-                    setLoading(false);
+                    props.setIsProductCreated(true);
+                    toast.success('Yey! Product Edited Successfully!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
                     props.setOpen(false);
+                    setLoading(false);
+                    props.setEditData(null);
                 }).catch(err => {
-                    props.setIscategoryCreated(false)
-                    setLoading(false);
+                    props.setIsProductCreated(false);
+                    toast.error('Em! Error while editing new Product', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
                     props.setOpen(false);
+                    setLoading(false);
+                    props.setEditData(null);
                 })
         }
     }
@@ -395,14 +442,12 @@ const ProductAddEditModal = (props: Props) => {
                     <CircularProgress color="inherit" />
                 </Backdrop>
             )}
-
             <div className="add">
                 <div className="modal">
                     <span className="close" onClick={() => handleClose()}>
                         X
                     </span>
                     <h1>{props.editData != null ? 'Edit' : 'Add New'} {props.title} </h1>
-                    
                     <form onSubmit={handleSubmit}>
                         {columns
                             .filter((item) => item.field !== "id" && item.field !== "img")
