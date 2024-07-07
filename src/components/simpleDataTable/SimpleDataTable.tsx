@@ -13,14 +13,14 @@ type Props = {
 
 const SimpleDataTable = (props: Props) => {
 
-    const [categoryyy, setCategoryyy] = useState([]);
+    const [tableData, setTableData] = useState([]);
     useEffect(() => {
       fetch(`http://localhost:8000/api/v1/${props.slug}/`)
         .then((res) => {
           return res.json();
         })
         .then((data) => {
-          setCategoryyy(data);
+          setTableData(data);
         })
         .catch((err) => {
           console.log(err)
@@ -33,15 +33,7 @@ const SimpleDataTable = (props: Props) => {
       }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 250 },
         { field: 'name', headerName: ' Name', width: 250 },
-    
-       
-        {
-          field: 'subCategories',
-          headerName: 'SubCategories',
-          width: 200,
-        },
       ];
     
       const handleEdit = (params: any) => {
@@ -69,7 +61,7 @@ const SimpleDataTable = (props: Props) => {
     <div className="dataTable">
       <DataGrid
         className="dataGrid"
-        rows={categoryyy}
+        rows={tableData}
         columns={[...columns,actionColumn]}
         initialState={{
           pagination: {

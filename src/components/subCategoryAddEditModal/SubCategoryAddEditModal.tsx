@@ -11,7 +11,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 type Props = {
     slug: string;
-    //columns: GridColDef[];
     setSubCategoriesOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
@@ -24,15 +23,12 @@ const SubCategoryAddEditModal = (props: Props) => {
     const [name, setName] = useState<string>(props.editData?.name ? props.editData?.name : '');
     const [imageURL, setImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
     const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
-
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
-
     const [loading, setLoading] = useState(false)
 
     const getData = async () => {
         try {
-
             const res = await Promise.all([
                 fetch("http://localhost:8000/api/v1/categories/"),
 
@@ -52,14 +48,11 @@ const SubCategoryAddEditModal = (props: Props) => {
             console.log('coming inside catch block')
             //throw Error("Promise failed");
         }
-
     }
 
     useEffect(() => {
         getData();
     }, [])
-
-    console.log("categories: ", categories)
 
     useEffect(() => {
         props.setIscategoryCreated(false);
@@ -69,36 +62,36 @@ const SubCategoryAddEditModal = (props: Props) => {
         { field: 'id', headerName: 'ID', width: 250 },
         { field: 'name', headerName: ' Name', width: 250, value: name, changeHandler: (value: string) => setName(value) }
     ]
-
+console.log("avinash selectedcategory",selectedCategory)
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         //performing ADD
         if (props.editData == null) {
-            props.setSubCategoriesOpen(false)
+            //props.setSubCategoriesOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
             }
             let data = new FormData();
-            image && data.append("image", image); //bypass this line for UoM and size
+            image && data.append("image", image);
             data.set("name", name);
-            console.log("data before sending in the payload: ", data)
+            selectedCategory && data.set("category",selectedCategory);
             setLoading(true)
-            axios.post(`http://localhost:8000/api/v1/${props.slug}`, data).then(
-
+            axios.post(`http://localhost:8000/api/v1/subCategories`, data).then(
                 res => {
                     console.log(res.data);
                     props.setIscategoryCreated(true)
                     setLoading(false);
+                    props.setSubCategoriesOpen(false)
                 }).catch(err => {
                     console.log(err);
                     props.setIscategoryCreated(false)
                     setLoading(false);
+                    props.setSubCategoriesOpen(false)
                 })
         } else {
             //performing EDIT
-            props.setSubCategoriesOpen(false)
+            //props.setSubCategoriesOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -106,17 +99,20 @@ const SubCategoryAddEditModal = (props: Props) => {
             let data = new FormData();
             image && typeof (image) === 'object' && data.append("image", image); //bypass this line for UoM and size
             data.set("name", name);
+            selectedCategory && data.set("category",selectedCategory);
             console.log("data before sending in the payload: ", data)
             setLoading(true)
-            axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
+            axios.put(`http://localhost:8000/api/v1/subCategories/${props.editData.id}/`, data).then(
                 res => {
                     console.log(res.data);
                     props.setIscategoryCreated(true)
                     setLoading(false)
+                    props.setSubCategoriesOpen(false)
                 }).catch(err => {
                     console.log(err);
                     props.setIscategoryCreated(false)
                     setLoading(true)
+                    props.setSubCategoriesOpen(false)
                 })
         }
     }
@@ -141,7 +137,6 @@ const SubCategoryAddEditModal = (props: Props) => {
                     <CircularProgress color="inherit" />
                 </Backdrop>
             )}
-
             <div className="add">
                 <div className="modal">
                     <span className="close" onClick={() => handleClose()}>
@@ -157,7 +152,6 @@ const SubCategoryAddEditModal = (props: Props) => {
                                     <input type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                                 </div>
                             ))}
-                        {/* //hide this below image section for UoM and size */}
                         <div className="item" >
                             <label>Image</label>
                             <input type="file" accept='image/*' placeholder="upload image"
@@ -171,7 +165,6 @@ const SubCategoryAddEditModal = (props: Props) => {
                             <div>
                                 {imageURL ? <img src={imageURL} width={200} height={150} alt={`${props.slug} image`} /> : ""}
                             </div>
-
                             {imageURL && <div className='delete_div'>
                                 <span>
                                     <button className='delete' onClick={() => {
@@ -182,14 +175,8 @@ const SubCategoryAddEditModal = (props: Props) => {
                                     </button>
                                 </span>
                             </div>}
-
-
-
                         </div>
-
-                        {/* ____________________________ ____________________________ ____________________________ */}
                         <div>
-
                             <FormControl style={{ border: '1px solid white', marginBottom: "15px" }}>
                                 <InputLabel id="category-select" style={{ color: 'white' }}>Category</InputLabel>
                                 <Select
@@ -198,13 +185,12 @@ const SubCategoryAddEditModal = (props: Props) => {
                                     id="select"
                                     value={selectedCategory}
                                     label="Category"
-                                    onChange={handleSelect}
+                                    onChange={(e) => handleSelect(e)}
                                 >
                                     {categories?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label}</MenuItem>))}
                                 </Select>
                             </FormControl>
                         </div>
-                        {/* ____________________________ ____________________________ ____________________________ */}
                         <button>Save</button>
                     </form>
                 </div>

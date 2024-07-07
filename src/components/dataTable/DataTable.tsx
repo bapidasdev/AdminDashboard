@@ -11,7 +11,7 @@ type Props = {
 }
 
 const DataTable = (props: Props) => {
-  const [categoryyy, setCategoryyy] = useState([]);
+  const [tableData, setTableData] = useState([]);
   
   useEffect(() => {
     fetch(`http://localhost:8000/api/v1/${props.slug}/`)
@@ -19,7 +19,8 @@ const DataTable = (props: Props) => {
         return res.json();
       })
       .then((data) => {
-        setCategoryyy(data);
+        console.log("avinash",data)
+        setTableData(data);
       })
       .catch((err) => {
         console.log(err)
@@ -32,7 +33,21 @@ const DataTable = (props: Props) => {
     }
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 250 },
+    { field: 'name', headerName: ' Name', width: 250 },
+
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 200,
+      renderCell: (params) => {
+        return <img src={params.row.image} alt='img' />
+      },
+      sortable: false,
+      filterable: false
+    }
+  ];
+
+  const categoriesColumns = [
     { field: 'name', headerName: ' Name', width: 250 },
 
     {
@@ -49,6 +64,10 @@ const DataTable = (props: Props) => {
       field: 'subCategories',
       headerName: 'SubCategories',
       width: 200,
+      renderCell: (params) => {
+        let subCategories = params.row.subCategories.map(subCategory => subCategory.name);
+        return <span>{subCategories.join(", ")}</span>
+      },
     },
   ];
 
@@ -78,8 +97,8 @@ const DataTable = (props: Props) => {
     <div className="dataTable">
       <DataGrid
         className="dataGrid"
-        rows={categoryyy}
-        columns={[...columns,actionColumn]}
+        rows={tableData}
+        columns={props.slug === 'categories' ? [...categoriesColumns,actionColumn] : [...columns,actionColumn]}
         initialState={{
           pagination: {
             paginationModel: {

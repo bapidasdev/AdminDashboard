@@ -14,7 +14,7 @@ type Props = {
 
 
 const ProductDataTable = (props: Props) => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
 
   useEffect(() => {
     getProductsData();
@@ -78,7 +78,6 @@ const ProductDataTable = (props: Props) => {
                 productVariants: product.productVariants
             }
         })
-        console.log(tempProduct);
         setProducts(tempProduct);
     } catch {
         console.log('coming inside catch block')
@@ -91,7 +90,6 @@ useEffect(() => {
 
   const handleEdit = (params: any) => {
     props.setOpen(true);
-    console.log("params",params.row);
     props.setEditData(params.row);
   }
 
@@ -111,12 +109,12 @@ useEffect(() => {
     }
   }
 
-  if(products?.length == 0) {
+  if(!products) {
     return (
       <>
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={products?.length == 0}
+            open={!products}
         >
             <CircularProgress color="inherit" />
         </Backdrop>
@@ -124,9 +122,17 @@ useEffect(() => {
     )
   }
 
+  if(products?.length === 0) {
+    return (
+      <>
+        <div className="noProductText">No Product...</div>
+      </>
+    )
+  }
+
   return (
     <div className="productDataTable">
-      {products.length>0 && <DataGrid
+      {products?.length > 0 && <DataGrid
         className="dataGrid"
         rows={products}
         columns={[...columns,actionColumn]}
