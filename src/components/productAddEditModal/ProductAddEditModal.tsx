@@ -1,13 +1,15 @@
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { InputLabel, MenuItem } from '@mui/material';
-import "./productAddEditModal.scss"
 import { MdDelete } from 'react-icons/md';
+import { InputLabel, MenuItem } from '@mui/material';
+
+import "./productAddEditModal.scss"
+import useToast from '../../utils/useToast';
+
 
 type Props = {
     slug: string;
@@ -19,7 +21,7 @@ type Props = {
 }
 
 const ProductAddEditModal = (props: Props) => {
-    const [name, setName] = useState<string>(props.editData?.name ? props.editData?.name : '');
+    const [productName, setProductName] = useState<string>(props.editData?.name ? props.editData?.name : '');
 
     const [productImageURL, setProductImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
     const [productImage, setProductImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
@@ -96,8 +98,6 @@ const ProductAddEditModal = (props: Props) => {
                 fetch("http://localhost:8000/api/v1/categories/"),
             ]);
             const data = await Promise.all(res.map(res => res.json()))
-
-            //console.log("Data: ", data);
             const tempCategories = data[0]?.map((category: any) => {
                 return {
                     label: category.name,
@@ -107,8 +107,7 @@ const ProductAddEditModal = (props: Props) => {
             })
             setCategories(tempCategories);
         } catch {
-            console.log('coming inside catch block')
-            //throw Error("Promise failed");
+            useToast('Error while loading Categories', 'error');
         }
     }
     useEffect(() => {
@@ -121,8 +120,6 @@ const ProductAddEditModal = (props: Props) => {
                 fetch("http://localhost:8000/api/v1/brands/"),
             ]);
             const data = await Promise.all(res.map(res => res.json()))
-
-            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((brand: any) => {
                 return {
                     label: brand.name,
@@ -132,8 +129,7 @@ const ProductAddEditModal = (props: Props) => {
             })
             setBrands(tempCategories);
         } catch {
-            console.log('coming inside catch block')
-            //throw Error("Promise failed");
+            useToast('Error while loading Brands', 'error');
         }
     }
     useEffect(() => {
@@ -146,8 +142,6 @@ const ProductAddEditModal = (props: Props) => {
                 fetch("http://localhost:8000/api/v1/colours/"),
             ]);
             const data = await Promise.all(res.map(res => res.json()))
-
-            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((colour: any) => {
                 return {
                     label: colour.name,
@@ -157,8 +151,7 @@ const ProductAddEditModal = (props: Props) => {
             })
             setColours(tempCategories);
         } catch {
-            console.log('coming inside catch block')
-            //throw Error("Promise failed");
+            useToast('Error while loading Colours', 'error');
         }
     }
     useEffect(() => {
@@ -171,8 +164,6 @@ const ProductAddEditModal = (props: Props) => {
                 fetch("http://localhost:8000/api/v1/sizes/"),
             ]);
             const data = await Promise.all(res.map(res => res.json()))
-
-            // console.log("Data: ", data);
             const tempCategories = data[0]?.map((size: any) => {
                 return {
                     label: size.name,
@@ -182,8 +173,7 @@ const ProductAddEditModal = (props: Props) => {
             })
             setSizes(tempCategories);
         } catch {
-            console.log('coming inside catch block')
-            //throw Error("Promise failed");
+            useToast('Error while loading Sizes', 'error');
         }
     }
     useEffect(() => {
@@ -196,8 +186,6 @@ const ProductAddEditModal = (props: Props) => {
                 fetch("http://localhost:8000/api/v1/uoms/"),
             ]);
             const data = await Promise.all(res.map(res => res.json()))
-
-            //console.log("Data: ", data);
             const tempCategories = data[0]?.map((uom: any) => {
                 return {
                     label: uom.name,
@@ -207,7 +195,7 @@ const ProductAddEditModal = (props: Props) => {
             })
             setUoms(tempCategories);
         } catch {
-            console.log('coming inside catch block')
+            useToast('Error while loading Unit of Measurements', 'error');
         }
     }
     useEffect(() => {
@@ -220,7 +208,7 @@ const ProductAddEditModal = (props: Props) => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 250 },
-        { field: 'name', headerName: ' Name', width: 250, value: name, changeHandler: (value: string) => setName(value) }
+        { field: 'name', headerName: ' Name', width: 250, value: name, changeHandler: (value: string) => setProductName(value) }
     ]
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -228,13 +216,13 @@ const ProductAddEditModal = (props: Props) => {
 
         //performing ADD
         if (props.editData == null) {
-            if (name === '') {
-                console.log("name is required!!!!");
+            if (productName === '') {
+                useToast('oh! Product Name is Required!', 'warn')
                 return;
             }
             let data = new FormData();
             productImage && data.append("image", productImage);
-            data.set("name", name);
+            data.set("name", productName);
             selectedBrands !== '' && data.set("brand", selectedBrands);
             selectedColours !== '' && data.set("colour", selectedColours);
             selectedSizes !== '' && data.set("size", selectedSizes);
@@ -254,92 +242,43 @@ const ProductAddEditModal = (props: Props) => {
                         axios.put(`http://localhost:8000/api/v1/${props.slug}/gallery-images/${res.data.id}`, galleryData).then(
                             res => {
                                 //clearForm();
-                                toast.success('🦄 Product created successfully with gallery images!', {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                    });
+                                useToast('Yey 🦄 Product created successfully with gallery images!', 'success');
                                 setLoading(false);
                                 props.setOpen(false);
                                 props.setIsProductCreated(true);
                             }
                         ).catch(err => {
-                            console.log("Error while adding gallary photos to the newly created product", err);
-    
                             //in this case delete the product created above
                             axios.delete(`http://localhost:8000/api/v1/${props.slug}/${res.data.id}`).then(res => {
-                                toast.error('Em! Error while adding gallary photos! Please try again after changing them', {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                    });
+                                useToast('Em! Error while adding gallary photos! Please try again after changing them', 'error');
                                 setLoading(false);
                             }).catch(err => {
-                                console.log("something went wrong please contact support")
-                                toast.error(`Something went wrong! Please contact support by shaing this id: ${res.data.id}`, {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                    });
+                                useToast(`Something went wrong! Please contact support by shaing this id: ${res.data.id}`, 'error')
                                 setLoading(false);
                             })
                         })
                     }
                     else {
-                        toast.success('Yey! Product created successfully with no gallery image(s)', {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                            });
+                        useToast('Yey! Product created successfully with no gallery image(s)', 'success');
                         setLoading(false);
                         props.setOpen(false);
                         props.setIsProductCreated(true);
                     }
                 }).catch(err => {
-                    console.log(err);
-                    toast.error('Em! Error while creating new Product', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        });
+                    useToast('Em! Error while creating new Product', 'error');
                     props.setIsProductCreated(false)
                     setLoading(false);
                 })
         } else {
             //performing EDIT
-            if (name === '') {
-                console.log("name is required!!!!");
+            if (productName === '') {
+                useToast('Oh! Product name is required!', 'warn');
                 return;
             }
             let data = new FormData();
             productImage && typeof (productImage) === 'object' && data.append("image", productImage);
             productGalleryImages && typeof (productGalleryImages) === 'object' && data.append("images", productGalleryImages);
-            data.set("name", name);
+            data.set("name", productName);
             selectedBrands !== '' && data.set("brand", selectedBrands);
             selectedColours !== '' && data.set("colour", selectedColours);
             selectedSizes !== '' && data.set("size", selectedSizes);
@@ -352,31 +291,13 @@ const ProductAddEditModal = (props: Props) => {
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
                     props.setIsProductCreated(true);
-                    toast.success('Yey! Product Edited Successfully!', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        });
+                    useToast('Yey! Product Edited Successfully!', 'success');
                     props.setOpen(false);
                     setLoading(false);
                     props.setEditData(null);
                 }).catch(err => {
                     props.setIsProductCreated(false);
-                    toast.error('Em! Error while editing new Product', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        });
+                    useToast('Em! Error while editing new Product', 'error');
                     props.setOpen(false);
                     setLoading(false);
                     props.setEditData(null);
@@ -418,7 +339,6 @@ const ProductAddEditModal = (props: Props) => {
     }
 
     const handleVariantChange = (value: any, key: any, index: any) => {
-        console.log("Avinash value",value)
         let tempProductVariants = [...productVariants];
         tempProductVariants[index][key]  = value;
         setProductVariants(tempProductVariants);
