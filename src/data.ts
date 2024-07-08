@@ -80,7 +80,7 @@ export const menu = [
       {
         id: 1,
         title: "Settings",
-        url: "/settings",
+        url: "/login",
         icon: "settings.svg",
       },
 

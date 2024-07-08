@@ -4,6 +4,8 @@ import axios from "axios";
 import "./addEditModal.scss"
 import { useEffect, useState } from "react";
 
+import useToast from '../../utils/useToast';
+
 type Props = {
     slug: string;
     //columns: GridColDef[];
@@ -36,6 +38,7 @@ const AddEditModal = (props: Props) => {
             props.setOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
+                useToast('oh! Product Name is Required!', 'warn')
                 return;
             }
             let data = new FormData();
@@ -50,12 +53,14 @@ const AddEditModal = (props: Props) => {
                 }).catch(err => {
                     console.log(err);
                     props.setIscategoryCreated(false)
+                    useToast('Error while loading Categories', 'error');
                 })
         } else {
             //performing EDIT
             props.setOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
+                useToast('oh! Product Name is Required!', 'warn')
                 return;
             }
             let data = new FormData();
@@ -68,6 +73,7 @@ const AddEditModal = (props: Props) => {
                     props.setIscategoryCreated(true)
                 }).catch(err => {
                     console.log(err);
+                    useToast('Error while loading Categories', 'error');
                     props.setIscategoryCreated(false)
                 })
         }

@@ -1,6 +1,9 @@
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import"./simpleDataTable.scss"
 import { useEffect, useState } from "react";
+
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 type Props = {
@@ -13,7 +16,7 @@ type Props = {
 
 const SimpleDataTable = (props: Props) => {
 
-    const [tableData, setTableData] = useState([]);
+    const [tableData, setTableData] = useState(null);
     useEffect(() => {
       fetch(`http://localhost:8000/api/v1/${props.slug}/`)
         .then((res) => {
@@ -57,9 +60,36 @@ const SimpleDataTable = (props: Props) => {
           )
         }
       }
+
+
+
+      if (!tableData) {
+        return (
+          <>
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={!tableData}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          </>
+        )
+      }
+    
+      if(tableData?.length === 0) {
+        return (
+          <>
+            <div className="noProductText">No Product...</div>
+          </>
+        )
+      }
+
+
+
+
   return (
     <div className="dataTable">
-      <DataGrid
+    {tableData?.length > 0 && <DataGrid
         className="dataGrid"
         rows={tableData}
         columns={[...columns,actionColumn]}
@@ -84,7 +114,7 @@ const SimpleDataTable = (props: Props) => {
         disableDensitySelector
         disableColumnSelector
 
-      />
+      />}
     </div>
   )
 }
