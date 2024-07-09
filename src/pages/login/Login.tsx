@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import "./login.scss"
+import logo from "../../../public/pvrd-light.png"
 
 const Login = () => {
 
@@ -14,6 +15,9 @@ console.log(localStorage.getItem("inputValue"));
   return (
     <div className='login'>
       <form className="form">
+        <div className="logo-container">
+          <img src={logo} alt="" />
+        </div>
         <div className="flex-column">
           <label>Username </label>
         </div>
