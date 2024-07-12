@@ -6,7 +6,7 @@ import SimpleAddEditModal from '../../components/simpleAddEditModal/SimpleAddEdi
 
 const Uom = () => {
     const [open, setOpen] = useState(false);
-    const [iscategoryCreated, setIscategoryCreated] = useState(false);
+    const [isproductCreated, setIsproductCreated] = useState(false);
     const [editData, setEditData] = useState<any>(null);
     return (
         <div className='uom'>
@@ -14,9 +14,10 @@ const Uom = () => {
                 <h1>Unit of Measure</h1>
                 <button className="addButton"  onClick={() => setOpen(true)}>ADD Unit of Measure</button>
             </div>
-            <SimpleDataTable setEditData={setEditData} setOpen={setOpen}iscategoryCreated={iscategoryCreated} slug="uoms"   />
+            <SimpleDataTable setEditData={setEditData} setOpen={setOpen}isproductCreated={isproductCreated} slug="uoms"   />
 
-            {open && <SimpleAddEditModal setEditData={setEditData} editData={editData} setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="uoms" title='Unit Of Measure'/>}
+            {open && <SimpleAddEditModal setEditData={setEditData} editData={editData} setIsproductCreated={setIsproductCreated}
+             setOpen={setOpen} slug="uoms" title='Unit Of Measure'/>}
         </div>
     )
 }

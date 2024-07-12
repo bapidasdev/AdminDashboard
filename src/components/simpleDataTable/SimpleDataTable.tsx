@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 type Props = {
   slug: string;
-  iscategoryCreated: any;
+  isproductCreated: any;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setEditData: React.Dispatch<any>;
   
@@ -29,7 +29,7 @@ const SimpleDataTable = (props: Props) => {
           console.log(err)
         })
         ;
-    }, [props.iscategoryCreated]);
+    }, [props.isproductCreated]);
   
       const handleDelete =(id:number)=>{
         console.log(id + "has been delete")

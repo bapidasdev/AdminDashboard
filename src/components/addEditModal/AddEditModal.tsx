@@ -8,9 +8,8 @@ import useToast from '../../utils/useToast';
 
 type Props = {
     slug: string;
-    //columns: GridColDef[];
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsproductCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
     title:string
@@ -22,7 +21,7 @@ const AddEditModal = (props: Props) => {
     const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
     useEffect(() => {
-        props.setIscategoryCreated(false);
+        props.setIsproductCreated(false);
     }, [])
 
     const columns = [
@@ -33,7 +32,6 @@ const AddEditModal = (props: Props) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //performing ADD
         if (props.editData == null) {
             props.setOpen(false)
             if (name === '') {
@@ -42,21 +40,21 @@ const AddEditModal = (props: Props) => {
                 return;
             }
             let data = new FormData();
-            image && data.append("image", image); //bypass this line for UoM and size
+            image && data.append("image", image); 
             data.set("name", name);
             console.log("data before sending in the payload: ", data)
             axios.post(`http://localhost:8000/api/v1/${props.slug}`, data).then(
 
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                     useToast('Error while loading Categories', 'error');
                 })
         } else {
-            //performing EDIT
+            
             props.setOpen(false)
             if (name === '') {
                 console.log("name is required!!!!");
@@ -70,11 +68,11 @@ const AddEditModal = (props: Props) => {
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}/`, data).then(
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                 }).catch(err => {
                     console.log(err);
                     useToast('Error while loading Categories', 'error');
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                 })
         }
     }
@@ -100,7 +98,7 @@ const AddEditModal = (props: Props) => {
                                 <input type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                             </div>
                         ))}
-                    {/* //hide this below image section for UoM and size */}
+                    
                     <div className="item" >
                         <label>Image</label>
                         <input type="file" accept='image/*' placeholder="upload image"

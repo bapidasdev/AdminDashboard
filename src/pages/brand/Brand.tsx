@@ -10,7 +10,7 @@ import AddEditModal from "../../components/addEditModal/AddEditModal"
 const Brand = () => {
 
   const [open, setOpen] = useState(false);
-  const [iscategoryCreated, setIscategoryCreated] = useState(false)
+  const [isproductCreated, setIsproductCreated] = useState(false);
   const [editData, setEditData] = useState<any>(null);
 
   return (
@@ -35,11 +35,11 @@ const Brand = () => {
       />
 
       <DataTable setEditData={setEditData}
-        iscategoryCreated={iscategoryCreated} setOpen={setOpen}
+        isproductCreated={isproductCreated} setOpen={setOpen}
         slug="brands" />
 
       {open && <AddEditModal setEditData={setEditData}
-        editData={editData} setIscategoryCreated={setIscategoryCreated}
+        editData={editData} setIsproductCreated={setIsproductCreated}
         setOpen={setOpen} slug="brands" title="Brand" />}
     </div>
   )

@@ -7,7 +7,7 @@ type Props = {
     slug: string;
     //columns: GridColDef[];
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsproductCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
     title:string;
@@ -19,7 +19,7 @@ const SimpleAddEditModal = (props: Props) => {
     const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
 
     useEffect(() => {
-        props.setIscategoryCreated(false);
+        props.setIsproductCreated(false);
     }, [])
 
     const columns = [
@@ -45,10 +45,10 @@ const SimpleAddEditModal = (props: Props) => {
 
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                 })
         } else {
             //performing EDIT
@@ -64,10 +64,10 @@ const SimpleAddEditModal = (props: Props) => {
             axios.put(`http://localhost:8000/api/v1/${props.slug}/${props.editData.id}`, data).then(
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                 })
         }
     }

@@ -5,7 +5,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="logo">
         <img height="60px" width="100px" src="pvrd-light.png" alt="" />
-        {/* <span>PVRD Manager</span> */}
+        
       </div>
 
       <div className="icons">

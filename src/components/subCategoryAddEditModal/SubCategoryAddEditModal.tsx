@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 type Props = {
     slug: string;
     setSubCategoriesOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setIscategoryCreated: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsproductCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
     title: string
@@ -46,7 +46,7 @@ const SubCategoryAddEditModal = (props: Props) => {
             setCategories(tempCategories);
         } catch {
             console.log('coming inside catch block')
-            //throw Error("Promise failed");
+            
         }
     }
 
@@ -55,7 +55,7 @@ const SubCategoryAddEditModal = (props: Props) => {
     }, [])
 
     useEffect(() => {
-        props.setIscategoryCreated(false);
+        props.setIsproductCreated(false);
     }, [])
 
     const columns = [
@@ -65,9 +65,9 @@ const SubCategoryAddEditModal = (props: Props) => {
 console.log("avinash selectedcategory",selectedCategory)
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //performing ADD
+      
         if (props.editData == null) {
-            //props.setSubCategoriesOpen(false)
+           
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
@@ -80,24 +80,23 @@ console.log("avinash selectedcategory",selectedCategory)
             axios.post(`http://localhost:8000/api/v1/subCategories`, data).then(
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                     setLoading(false);
                     props.setSubCategoriesOpen(false)
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                     setLoading(false);
                     props.setSubCategoriesOpen(false)
                 })
         } else {
-            //performing EDIT
-            //props.setSubCategoriesOpen(false)
+          
             if (name === '') {
                 console.log("name is required!!!!");
                 return;
             }
             let data = new FormData();
-            image && typeof (image) === 'object' && data.append("image", image); //bypass this line for UoM and size
+            image && typeof (image) === 'object' && data.append("image", image); 
             data.set("name", name);
             selectedCategory && data.set("category",selectedCategory);
             console.log("data before sending in the payload: ", data)
@@ -105,12 +104,12 @@ console.log("avinash selectedcategory",selectedCategory)
             axios.put(`http://localhost:8000/api/v1/subCategories/${props.editData.id}/`, data).then(
                 res => {
                     console.log(res.data);
-                    props.setIscategoryCreated(true)
+                    props.setIsproductCreated(true)
                     setLoading(false)
                     props.setSubCategoriesOpen(false)
                 }).catch(err => {
                     console.log(err);
-                    props.setIscategoryCreated(false)
+                    props.setIsproductCreated(false)
                     setLoading(true)
                     props.setSubCategoriesOpen(false)
                 })

@@ -48,26 +48,26 @@ const ProductAddEditModal = (props: Props) => {
     const [productRewardPoint, setProductRewardPoint] = useState(props.editData?.rewardPoint ? props.editData?.rewardPoint : '');
 
     const [productVariants, setProductVariants] = useState([]);
-    
+
     const [productGalleryImages, setProductGalleryImages] = useState(props.editData?.images ? props.editData?.images : null);
     const [productGalleryImagesURL, setProductGalleryImagesURL] = useState(props.editData?.images ? props.editData?.images : null);
-    
+
     const productGalleryImageRef = useRef(null);
     const productImageRef = useRef(null);
 
     useEffect(() => {
-        if(props.editData) {
+        if (props.editData) {
             const tempProductVariants = props?.editData?.productVariants?.map(variant => {
                 return {
-                  colour: variant?.colour._id,
-                  size: variant?.size._id,
-                  uom: variant?.uom._id,
-                  packingUnit: variant?.packingUnit,
-                  price: variant?.price,
-                  rewardPoint: variant?.rewardPoint
+                    colour: variant?.colour._id,
+                    size: variant?.size._id,
+                    uom: variant?.uom._id,
+                    packingUnit: variant?.packingUnit,
+                    price: variant?.price,
+                    rewardPoint: variant?.rewardPoint
                 }
-              });
-              setProductVariants(tempProductVariants);
+            });
+            setProductVariants(tempProductVariants);
         }
     }, [props.editData]);
 
@@ -113,7 +113,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getCategoryData();
     }, [])
-    
+
     const getBrandsData = async () => {
         try {
             const res = await Promise.all([
@@ -135,7 +135,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getBrandsData();
     }, [])
-    
+
     const getColoursData = async () => {
         try {
             const res = await Promise.all([
@@ -157,7 +157,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getColoursData();
     }, [])
-    
+
     const getSizesData = async () => {
         try {
             const res = await Promise.all([
@@ -179,7 +179,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getSizesData();
     }, [])
-    
+
     const getUomsData = async () => {
         try {
             const res = await Promise.all([
@@ -201,7 +201,7 @@ const ProductAddEditModal = (props: Props) => {
     useEffect(() => {
         getUomsData();
     }, [])
-    
+
     useEffect(() => {
         props.setIsProductCreated(false);
     }, [])
@@ -214,7 +214,7 @@ const ProductAddEditModal = (props: Props) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //performing ADD
+    
         if (props.editData == null) {
             if (productName === '') {
                 useToast('oh! Product Name is Required!', 'warn')
@@ -241,14 +241,14 @@ const ProductAddEditModal = (props: Props) => {
                         }
                         axios.put(`http://localhost:8000/api/v1/${props.slug}/gallery-images/${res.data.id}`, galleryData).then(
                             res => {
-                                //clearForm();
+                                
                                 useToast('Yey 🦄 Product created successfully with gallery images!', 'success');
                                 setLoading(false);
                                 props.setOpen(false);
                                 props.setIsProductCreated(true);
                             }
                         ).catch(err => {
-                            //in this case delete the product created above
+                           
                             axios.delete(`http://localhost:8000/api/v1/${props.slug}/${res.data.id}`).then(res => {
                                 useToast('Em! Error while adding gallary photos! Please try again after changing them', 'error');
                                 setLoading(false);
@@ -270,7 +270,7 @@ const ProductAddEditModal = (props: Props) => {
                     setLoading(false);
                 })
         } else {
-            //performing EDIT
+           
             if (productName === '') {
                 useToast('Oh! Product name is required!', 'warn');
                 return;
@@ -331,7 +331,6 @@ const ProductAddEditModal = (props: Props) => {
     }
 
 
-    // Addvariant
 
     const handleAddVariant = (e: any) => {
         e.preventDefault();
@@ -340,7 +339,7 @@ const ProductAddEditModal = (props: Props) => {
 
     const handleVariantChange = (value: any, key: any, index: any) => {
         let tempProductVariants = [...productVariants];
-        tempProductVariants[index][key]  = value;
+        tempProductVariants[index][key] = value;
         setProductVariants(tempProductVariants);
     }
 
@@ -482,12 +481,12 @@ const ProductAddEditModal = (props: Props) => {
                         <div className='productRewardField'>
                             <label>Reward Point</label>
                             <input
-                             className='productRewardFieldInput'
-                              type="number"
-                               placeholder='Reward Point' 
-                               onChange={e => setProductRewardPoint(e.target.value)}
-                               value={productRewardPoint}
-                               />
+                                className='productRewardFieldInput'
+                                type="number"
+                                placeholder='Reward Point'
+                                onChange={e => setProductRewardPoint(e.target.value)}
+                                value={productRewardPoint}
+                            />
                         </div>
 
 
@@ -633,7 +632,7 @@ const ProductAddEditModal = (props: Props) => {
                         </div>
 
 
-                        {/* Add variant */}
+                       
                         <button>Save</button>
 
                     </form>

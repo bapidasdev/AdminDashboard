@@ -5,7 +5,7 @@ import SimpleAddEditModal from '../../components/simpleAddEditModal/SimpleAddEdi
 
 const Size = () => {
   const [open, setOpen] = useState(false);
-  const [iscategoryCreated, setIscategoryCreated] = useState(false)
+  const [isproductCreated, setIsproductCreated] = useState(false)
   const [editData, setEditData] = useState<any>(null);
   return (
     <div className='sizes'>
@@ -13,9 +13,9 @@ const Size = () => {
         <h1>Size</h1>
         <button className="addButton"  onClick={() => setOpen(true)}>ADD Size</button>
       </div>
-      <SimpleDataTable setEditData={setEditData} setOpen={setOpen} iscategoryCreated={iscategoryCreated} slug="sizes"  />
+      <SimpleDataTable setEditData={setEditData} setOpen={setOpen} isproductCreated={isproductCreated} slug="sizes"  />
 
-      {open && <SimpleAddEditModal setEditData={setEditData} editData={editData} setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="sizes" title='Size' />}
+      {open && <SimpleAddEditModal setEditData={setEditData} editData={editData} setIsproductCreated={setIsproductCreated} setOpen={setOpen} slug="sizes" title='Size' />}
     </div>
   )
 }

@@ -8,7 +8,7 @@ import SubCategoryAddEditModal from "../../components/subCategoryAddEditModal/Su
 const Categories = () => {
   const [open, setOpen] = useState(false);
   const [subCategoriesOpen, setSubCategoriesOpen] = useState(false)
- const [iscategoryCreated, setIscategoryCreated] = useState(false);
+  const [isproductCreated, setIsproductCreated] = useState(false);
  const [editData, setEditData] = useState<any>(null);
 
   return (
@@ -18,11 +18,11 @@ const Categories = () => {
         <button className="addButton" onClick={() => setOpen(true)}>ADD Category</button>
         <button className="addButton" onClick={() => setSubCategoriesOpen(true)}>ADD SubCategory</button>
       </div>
-       <DataTable setEditData={setEditData}  iscategoryCreated={iscategoryCreated} setOpen={setOpen}  slug="categories"/>
+       <DataTable setEditData={setEditData} isproductCreated ={isproductCreated} setOpen={setOpen}  slug="categories"/>
       
-      {open && <AddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setOpen={setOpen} slug="categories" title="Category" />}
+      {open && <AddEditModal setEditData={setEditData} editData={editData}  setIsproductCreated={setIsproductCreated} setOpen={setOpen} slug="categories" title="Category" />}
 
-      {subCategoriesOpen && <SubCategoryAddEditModal setEditData={setEditData} editData={editData}  setIscategoryCreated={setIscategoryCreated} setSubCategoriesOpen={setSubCategoriesOpen} slug="categories" title="SubCategory" />}
+      {subCategoriesOpen && <SubCategoryAddEditModal setEditData={setEditData} editData={editData}  setIsproductCreated={setIsproductCreated} setSubCategoriesOpen={setSubCategoriesOpen} slug="categories" title="SubCategory" />}
     </div>
   )
 }
