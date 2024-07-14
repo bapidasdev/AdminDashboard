@@ -148,7 +148,7 @@ console.log("avinash selectedcategory",selectedCategory)
                             .map((column) => (
                                 <div className="item">
                                     <label>{column.headerName}</label>
-                                    <input type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
+                                    <input type="text" style={{padding:"12px"}} placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                                 </div>
                             ))}
                         <div className="item" >
@@ -179,14 +179,14 @@ console.log("avinash selectedcategory",selectedCategory)
                             <FormControl style={{ border: '1px solid white', marginBottom: "15px" }}>
                                 <InputLabel id="category-select" style={{ color: 'white' }}>Category</InputLabel>
                                 <Select
-                                    style={{ width: '180px', height: '45px' }}
+                                    style={{ width: '240px', height: '45px', color:"white",  }}
                                     labelId="category-select"
                                     id="select"
                                     value={selectedCategory}
                                     label="Category"
                                     onChange={(e) => handleSelect(e)}
                                 >
-                                    {categories?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label}</MenuItem>))}
+                                    {categories?.map((item, index) => (<MenuItem key={index} value={item?.value}>{item?.label }</MenuItem>))}
                                 </Select>
                             </FormControl>
                         </div>

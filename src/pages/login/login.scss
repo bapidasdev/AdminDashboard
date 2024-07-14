@@ -1,6 +1,6 @@
 .login {
   height: 100vh;
-  background-color: #121212;
+  background-color: #2a3447;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,8 +35,10 @@
   }
 
   .flex-column label {
-    color: #151717;
+    color: #2a3447;
     font-weight: 600;
+    // font-family: cursive;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 
   }
 
@@ -69,7 +71,7 @@
 
   .button-submit {
     margin: 20px 0 10px 0;
-    background-color: #151717;
+    background-color: #2a3447;
     border: none;
     color: white;
     font-size: 15px;

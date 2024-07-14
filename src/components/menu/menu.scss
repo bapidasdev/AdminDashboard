@@ -8,7 +8,8 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
-        margin-bottom: 33px;
+        margin-bottom: 31px;
+        width: 200px;
 
         .title {
             font-size: 12px;
@@ -31,8 +32,6 @@
             &:hover {
                 background-color: $soft-bg;
             }
-
-
         }
 
         img {}

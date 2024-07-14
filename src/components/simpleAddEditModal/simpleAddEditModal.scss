@@ -55,13 +55,14 @@
           outline: none;
           border: 1px solid $soft-color;
           border-radius: 3px;
-          width: max-content;
+         width: 250px;
+          
           
         }
         
       }
       button {
-        width: 100%;
+        width: 100%; 
         padding: 10px;
         cursor: pointer;
         border-radius: 10px;

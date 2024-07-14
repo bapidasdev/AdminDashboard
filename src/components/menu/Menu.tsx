@@ -15,8 +15,6 @@ const Menu = () => {
               <span className="listItemTitle">{litsItem.title} </span>
             </Link>
           ))}
-
-
         </div>
       ))}
     </div>

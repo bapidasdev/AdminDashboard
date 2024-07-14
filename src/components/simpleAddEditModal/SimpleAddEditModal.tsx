@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import "./simpleAddEditModal.scss"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
     slug: string;
@@ -10,13 +10,35 @@ type Props = {
     setIsproductCreated: React.Dispatch<React.SetStateAction<boolean>>;
     editData: any;
     setEditData: React.Dispatch<any>;
-    title:string;
+    title: string;
 }
 
 const SimpleAddEditModal = (props: Props) => {
     const [name, setName] = useState<string>(props.editData?.name ? props.editData?.name : '');
     const [imageURL, setImageURL] = useState<string | null>(props.editData?.image ? props.editData?.image : null);
     const [image, setImage] = useState<string | File | null>(props.editData?.image ? props.editData?.image : null);
+
+
+    //  const userName = useRef<any>();
+    //  const password = useRef<any>();
+
+    //  const savehendleSubmit = () => {
+
+    //      localStorage.setItem("UserName", userName.current.value)
+    //      localStorage.setItem("Password", password.current.value)
+
+    //      if (localStorage.getItem(userName.current.value && password.current.value)) {
+    //          alert("milgya data") //post call
+    //      }
+    //      else {
+    //          alert("data not match")
+    //     }
+    // }
+
+    //  console.log(localStorage.getItem("UserName" + "" + "Password"));
+
+
+
 
     useEffect(() => {
         props.setIsproductCreated(false);
@@ -72,6 +94,8 @@ const SimpleAddEditModal = (props: Props) => {
         }
     }
 
+
+
     const handleClose = () => {
         props.setOpen(false);
         props.setEditData(null);
@@ -93,9 +117,11 @@ const SimpleAddEditModal = (props: Props) => {
                                 <input className="simpleInputField" type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                             </div>
                         ))}
-                    {/* //hide this below image section for UoM and size */}
-                  
-                    <button>Save</button>
+
+
+                    <button
+                    //  onClick={savehendleSubmit}
+                     >Save</button>
                 </form>
             </div>
         </div>

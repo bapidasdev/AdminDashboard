@@ -95,7 +95,7 @@ const AddEditModal = (props: Props) => {
                         .map((column) => (
                             <div className="item">
                                 <label>{column.headerName}</label>
-                                <input type="text" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
+                                <input type="text" className="name_input" placeholder={column.field} value={column.value} onChange={e => column.changeHandler && column.changeHandler(e.target.value)} />
                             </div>
                         ))}
                     
